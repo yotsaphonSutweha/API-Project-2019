@@ -30,14 +30,15 @@ import javax.ws.rs.core.Response;
  */
 @Path("/test")
 public class Test {
-    Customer newCustomer = new Customer();
-    ArrayList<Customer> newCustomers = new ArrayList<>();
-//    @GET
-//    @Path("/{id}")
-//    public String test(@PathParam("id") int id){
-//        System.out.println("was it called");
-//        return "Hello World " + id;
-//    }
+//    Customer newCustomer = new Customer();
+//    ArrayList<Customer> newCustomers = new ArrayList<>();
+//    
+    @GET
+    @Path("/{id}")
+    public String test(@PathParam("id") int id){
+        System.out.println("was it called");
+        return "Hello World " + id;
+    }
    
     @GET
     @Path("/sayHello")
@@ -60,13 +61,13 @@ public class Test {
     
     
     
-    @POST
-    @Path("/createcustomer")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
-    public String createCustomer(Customer customer) {
-        newCustomers.add(customer);
-        return "Done";
-    }
+//    @POST
+//    @Path("/createcustomer")
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Produces(MediaType.TEXT_PLAIN)
+//    public String createCustomer(Customer customer) {
+//        newCustomers.add(customer);
+//        return "Done";
+//    }
 
 }
