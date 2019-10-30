@@ -47,6 +47,10 @@ public class Customer {
         this.accounts = accounts;
     }
     
+    public void addAccount(final Account account){
+        accounts.add(account);
+    }
+    
     public Account getCustomerAccountByIBAN(final String IBAN){
         for(Account account : accounts){
             if(account.getIBAN().equals(IBAN)){

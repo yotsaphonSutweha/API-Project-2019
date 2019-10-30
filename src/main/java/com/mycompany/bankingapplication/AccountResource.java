@@ -66,17 +66,38 @@ public class AccountResource {
             if(account != null){
                 return account;
             }
+            throw new WebApplicationException("Account not found", Response.Status.NOT_FOUND);
         }
-        throw new WebApplicationException(Response.Status.NOT_FOUND);
+        throw new WebApplicationException("Customer not found", Response.Status.NOT_FOUND);
     }
     
     @POST
     public void createAccount(@HeaderParam("customerId") final String customerId, final Account account){
-        
+        Customer customer = Customers.getInstance().getCustomerById(customerId);
+        if(customer != null){
+            customer.addAccount(account);
+            Customers.getInstance().updateCustomer(customer);
+            return;
+        }
+        throw new WebApplicationException("Customer not found", Response.Status.NOT_FOUND);
     }
     
     @PUT
     public void updateAccount(@HeaderParam("customerId") final String customerId, final Account account){
-    
+        Customer customer = Customers.getInstance().getCustomerById(customerId);
+        if(customer != null){
+            ArrayList<Account> accounts = customer.getAccounts();
+            for(int i = 0; i < accounts.size(); i++){
+                Account a = accounts.get(i);
+                if(a.getIBAN().equals(account.getIBAN())){
+                    accounts.set(i, account);
+                    customer.setAccounts(accounts);
+                    Customers.getInstance().updateCustomer(customer);
+                    return;
+                }
+            }
+            throw new WebApplicationException("Account not found" ,Response.Status.NOT_FOUND);
+        }
+        throw new WebApplicationException("Customer not found" ,Response.Status.NOT_FOUND);
     }
 }
