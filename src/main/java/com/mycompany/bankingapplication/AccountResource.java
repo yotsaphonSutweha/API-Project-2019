@@ -46,7 +46,7 @@ public class AccountResource {
                 return account;
             }
         }
-        throw new WebApplicationException(Response.Status.NOT_FOUND);
+        throw new WebApplicationException("Account not found", Response.Status.NOT_FOUND);
     }
     
     @GET
@@ -96,8 +96,8 @@ public class AccountResource {
                     return;
                 }
             }
-            throw new WebApplicationException("Account not found" ,Response.Status.NOT_FOUND);
+            throw new WebApplicationException("Account not found", Response.Status.NOT_FOUND);
         }
-        throw new WebApplicationException("Customer not found" ,Response.Status.NOT_FOUND);
+        throw new WebApplicationException("Customer not found", Response.Status.NOT_FOUND);
     }
 }
