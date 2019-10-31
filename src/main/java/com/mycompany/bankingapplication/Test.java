@@ -6,6 +6,7 @@
 package com.mycompany.bankingapplication;
 
 import com.mycompany.bankingapplication.Objects.Customer;
+import com.mycompany.bankingapplication.Objects.CustomersDataService;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.PathParam; 
@@ -30,8 +32,7 @@ import javax.ws.rs.core.Response;
  */
 @Path("/test")
 public class Test {
-    Customer newCustomer = new Customer();
-    ArrayList<Customer> newCustomers = new ArrayList<>();
+    CustomersDataService custOp = CustomersDataService.getInstance();
 //    @GET
 //    @Path("/{id}")
 //    public String test(@PathParam("id") int id){
@@ -60,13 +61,8 @@ public class Test {
     
     
     
-    @POST
-    @Path("/createcustomer")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
-    public String createCustomer(Customer customer) {
-        newCustomers.add(customer);
-        return "Done";
-    }
+    
+    
+  
 
 }
