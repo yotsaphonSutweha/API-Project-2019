@@ -30,6 +30,17 @@ public class Customers {
        return newId;
    }
    
+   public boolean updateCustomer(final Customer customer){
+       for(int i = 0; i < customers.size(); i++){
+           Customer c = customers.get(i);
+           if(c.getId().equals(customer.getId())){
+               customers.set(i, customer);
+               return true;
+           }
+       }
+       return false;
+   }
+   
    public Customer getCustomerById(String id) {
        for (Customer customer : customers) {
            if (customer.getId().equals(id)) {
