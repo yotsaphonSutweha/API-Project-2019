@@ -37,6 +37,7 @@ public class Customer {
         this.email = email;
         this.password = password;
         this.securtityCred = securtityCred;
+        this.accounts = new ArrayList();
     }
 
     public ArrayList<Account> getAccounts() {

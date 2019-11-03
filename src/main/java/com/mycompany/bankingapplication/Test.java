@@ -5,7 +5,9 @@
  */
 package com.mycompany.bankingapplication;
 
+import com.mycompany.bankingapplication.Objects.Account;
 import com.mycompany.bankingapplication.Objects.Customer;
+import com.mycompany.bankingapplication.Objects.Customers;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,6 +35,17 @@ public class Test {
 //    Customer newCustomer = new Customer();
 //    ArrayList<Customer> newCustomers = new ArrayList<>();
 //    
+    
+    @GET
+    @Produces("application/json")
+    public String setupTestObjects(){
+        Customer customer = new Customer("1", "Yo", "Suts", "Abbey Street", "yo@gmail.com", "ajkshdakshd",  "110L");
+        Account account = new Account("1", 100, "IBAN", "Current");
+        customer.addAccount(account);
+        Customers.getInstance().addCustomer(customer);
+        return "test setup";
+    }
+    
     @GET
     @Path("/{id}")
     public String test(@PathParam("id") int id){

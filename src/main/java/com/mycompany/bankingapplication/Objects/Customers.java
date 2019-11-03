@@ -47,6 +47,6 @@ public class Customers {
                return customer;
            }
        }
-       return null;
+       return new Customer();
    }
 }
