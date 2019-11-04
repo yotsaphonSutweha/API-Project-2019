@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Objects/Transaction.java
 /Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Objects/CustomersDataService.java
 /Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/TestingClient.java
@@ -5,3 +6,6 @@
 /Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Objects/Account.java
 /Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Test.java
 /Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/CustomerEndpoints.java
+=======
+/home/hassan/NetBeansProjects/BankingApplication/src/main/java/com/mycompany/bankingapplication/Test.java
+>>>>>>> f87dc4ad5ccaff27dcbd13bcfdaf5d671b166a46

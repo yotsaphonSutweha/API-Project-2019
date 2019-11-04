@@ -5,6 +5,7 @@
  */
 package com.mycompany.bankingapplication;
 
+
 import com.mycompany.bankingapplication.Objects.Customer;
 import com.mycompany.bankingapplication.Objects.CustomersDataService;
 import java.io.ByteArrayInputStream;
@@ -59,10 +60,4 @@ public class Test {
         return new Customer("1", "Yo", "Suts", "Abbey Street", "yo@gmail.com", "ajkshdakshd",  "110L");
     }
     
-    
-    
-    
-    
-  
-
 }
