@@ -6,14 +6,16 @@
 package com.mycompany.bankingapplication.Objects;
 
 import java.util.ArrayList;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author yo
  */
+@XmlRootElement
 public class Account {
     private String id;
-    private int balance;
+    private double balance;
     private String IBAN;
     private String accountType;
     private ArrayList<Transaction> transactions;
@@ -22,7 +24,7 @@ public class Account {
         
     }
     
-    public Account(String id, int balance, String IBAN, String accountType) {
+    public Account(String id, double balance, String IBAN, String accountType) {
         this.id = id;
         this.balance = balance;
         this.IBAN = IBAN;
@@ -45,7 +47,7 @@ public class Account {
         this.id = id;
     }
 
-    public int getBalance() {
+    public double getBalance() {
         return balance;
     }
 
@@ -68,6 +70,4 @@ public class Account {
     public void setAccountType(String accountType) {
         this.accountType = accountType;
     }
-    
-    
 }

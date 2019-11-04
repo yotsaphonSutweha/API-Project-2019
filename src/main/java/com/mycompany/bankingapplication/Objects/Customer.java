@@ -6,6 +6,7 @@
 package com.mycompany.bankingapplication.Objects;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -36,6 +37,7 @@ public class Customer {
         this.email = email;
         this.password = password;
         this.securtityCred = securtityCred;
+        this.accounts = new ArrayList();
     }
 
     public ArrayList<Account> getAccounts() {
@@ -44,6 +46,19 @@ public class Customer {
 
     public void setAccounts(ArrayList<Account> accounts) {
         this.accounts = accounts;
+    }
+    
+    public void addAccount(final Account account){
+        accounts.add(account);
+    }
+    
+    public Account getCustomerAccountByIBAN(final String IBAN){
+        for(Account account : accounts){
+            if(account.getIBAN().equals(IBAN)){
+                return account;
+            }
+        }
+        return null;
     }
     
     public String getId() {

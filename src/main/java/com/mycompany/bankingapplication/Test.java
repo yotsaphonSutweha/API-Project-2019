@@ -6,8 +6,11 @@
 package com.mycompany.bankingapplication;
 
 
+import com.mycompany.bankingapplication.Objects.Account;
 import com.mycompany.bankingapplication.Objects.Customer;
+import com.mycompany.bankingapplication.Objects.Customers;
 import com.mycompany.bankingapplication.Objects.CustomersDataService;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,7 +36,28 @@ import javax.ws.rs.core.Response;
  */
 @Path("/test")
 public class Test {
+//    Customer newCustomer = new Customer();
+//    ArrayList<Customer> newCustomers = new ArrayList<>();
+//    
     CustomersDataService custOp = CustomersDataService.getInstance();
+    
+    @GET
+    @Produces("application/json")
+    public String setupTestObjects(){
+        Customer customer = new Customer("1", "Yo", "Suts", "Abbey Street", "yo@gmail.com", "ajkshdakshd",  "110L");
+        Account account = new Account("1", 100, "IBAN", "Current");
+        customer.addAccount(account);
+        Customers.getInstance().addCustomer(customer);
+        return "test setup";
+    }
+    
+    @GET
+    @Path("/{id}")
+    public String test(@PathParam("id") int id){
+        System.out.println("was it called");
+        return "Hello World " + id;
+    }
+    
 //    @GET
 //    @Path("/{id}")
 //    public String test(@PathParam("id") int id){
@@ -59,5 +83,4 @@ public class Test {
     public Customer getCustomer() {
         return new Customer("1", "Yo", "Suts", "Abbey Street", "yo@gmail.com", "ajkshdakshd",  "110L");
     }
-    
 }
