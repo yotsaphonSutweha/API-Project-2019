@@ -24,6 +24,8 @@ public class Customer {
     private String password;
     private String securtityCred;
     private ArrayList<Account> accounts;
+    //not really a customer but for this project it will do fine
+    private boolean isAdmin;
             
     public Customer() {
         
@@ -116,4 +118,12 @@ public class Customer {
     public void setSecurtityCred(String securtityCred) {
         this.securtityCred = securtityCred;
     } 
+    
+    public boolean getPrivilages(){
+        return isAdmin;
+    }
+    
+    public void setPrivilages(boolean isAdmin){
+        this.isAdmin = isAdmin;
+    }
 }

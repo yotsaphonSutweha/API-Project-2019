@@ -11,6 +11,7 @@ import com.mycompany.bankingapplication.Objects.Customers;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
@@ -31,12 +32,16 @@ public class AccountResource {
     @GET
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
-    public List<Account> getAllAccounts(@HeaderParam("customerId") final String adminId){
-        List<Account> accounts = new ArrayList();
-        for(Customer customer : Customers.getInstance().getCustomerList()){
-            accounts.addAll(customer.getAccounts());
+    public Response getAllAccounts(@HeaderParam("customerId") final String adminId){
+        Customer admin = Customers.getInstance().getCustomerById(adminId);
+        if(admin.getPrivilages() == true){
+            List<Account> accounts = new ArrayList();
+            for(Customer customer : Customers.getInstance().getCustomerList()){
+                accounts.addAll(customer.getAccounts());
+            }
+            return Response.status(Response.Status.OK).entity(accounts).build();
         }
-        return accounts;
+        return Response.status(Response.Status.UNAUTHORIZED).entity("You must be an Admin to view all accounts").build();
     }
     
     @GET
@@ -45,13 +50,17 @@ public class AccountResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response getSpecificAccountByIBAN(@HeaderParam("customerId") final String adminId, 
             @PathParam("IBAN") final String IBAN){
-        for(Customer customer : Customers.getInstance().getCustomerList()){
-            Account account = customer.getCustomerAccountByIBAN(IBAN);
-            if(account != null){
-                return Response.status(Response.Status.OK).entity(account).build();
+        Customer admin = Customers.getInstance().getCustomerById(adminId);
+        if(admin.getPrivilages() == true){
+            for(Customer customer : Customers.getInstance().getCustomerList()){
+                Account account = customer.getCustomerAccountByIBAN(IBAN);
+                if(account != null){
+                    return Response.status(Response.Status.OK).entity(account).build();
+                }
             }
+            return Response.status(Response.Status.NOT_FOUND).entity("Account not found").build();
         }
-        return Response.status(Response.Status.NOT_FOUND).entity("Account not found").build();
+        return Response.status(Response.Status.UNAUTHORIZED).entity("You must be an Admin to view another users account").build();
     }
     
     @GET
@@ -112,6 +121,27 @@ public class AccountResource {
             }
             return Response.status(Response.Status.NOT_FOUND).entity("Account not found").build();
         }
+        return Response.status(Response.Status.NOT_FOUND).entity("Customer not found").build();
+    }
+    
+    @DELETE
+    @Produces("application/json")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deleteAccount(@HeaderParam("customerId") final String customerId, final String IBAN){
+        Customer customer = Customers.getInstance().getCustomerById(customerId);
+        if(customer.getSecurtityCred() != null){
+            ArrayList<Account> accounts = customer.getAccounts();
+            for(int i = 0; i < accounts.size(); i++){
+                if(accounts.get(i).getIBAN().equals(IBAN)){
+                    accounts.remove(i);
+                    customer.setAccounts(accounts);
+                    Customers.getInstance().updateCustomer(customer);
+                    return Response.status(Response.Status.OK).build();
+                }
+            }
+            return Response.status(Response.Status.NOT_FOUND).entity("Account not found").build();
+        }
+        
         return Response.status(Response.Status.NOT_FOUND).entity("Customer not found").build();
     }
 }
