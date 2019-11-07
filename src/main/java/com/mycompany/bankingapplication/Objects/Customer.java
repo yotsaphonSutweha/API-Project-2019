@@ -6,6 +6,7 @@
 package com.mycompany.bankingapplication.Objects;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -21,21 +22,22 @@ public class Customer {
     private String address;
     private String email;
     private String password;
-    private String securtityCred;
-    private ArrayList<Account> accounts;
+    private String securityCred;
+    private ArrayList<Account> accounts = new ArrayList();
             
     public Customer() {
-        
+        this.accounts = new ArrayList();
     } 
 
-    public Customer(String id, String firstName, String secondName, String address, String email, String password, String securtityCred) {
+    public Customer(String id, String firstName, String secondName, String address, String email, String password, String securityCred) {
         this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
         this.address = address;
         this.email = email;
         this.password = password;
-        this.securtityCred = securtityCred;
+        this.securityCred = securityCred;
+        this.accounts = new ArrayList();
     }
 
     public ArrayList<Account> getAccounts() {
@@ -44,6 +46,19 @@ public class Customer {
 
     public void setAccounts(ArrayList<Account> accounts) {
         this.accounts = accounts;
+    }
+    
+    public void addAccount(final Account account){
+        accounts.add(account);
+    }
+    
+    public Account getCustomerAccountByIBAN(final String IBAN){
+        for(Account account : accounts){
+            if(account.getIBAN().equals(IBAN)){
+                return account;
+            }
+        }
+        return null;
     }
     
     public String getId() {
@@ -94,11 +109,13 @@ public class Customer {
         this.password = password;
     }
 
-    public String getSecurtityCred() {
-        return securtityCred;
+    public String getSecurityCred() {
+        return securityCred;
     }
 
-    public void setSecurtityCred(String securtityCred) {
-        this.securtityCred = securtityCred;
-    } 
+    public void setSecurityCred(String securityCred) {
+        this.securityCred = securityCred;
+    }
+    
+    
 }

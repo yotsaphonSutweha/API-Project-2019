@@ -10,22 +10,26 @@ package com.mycompany.bankingapplication.Objects;
  * @author yo
  */
 public class Transaction {
+    private String transactionId;
     private String transactionType;
     private String transferDate;
     private String description;
-    private int preBalance;
-    private int postBalance;
+    private double currentBalance;
+    private double transactionAmt;
+   
     
     public Transaction() {
         
     }
 
-    public Transaction(String transactionType, String transferDate, String description, int preBalance, int postBalance) {
+    public Transaction(String transactionId, String transactionType, String transferDate, String description, double currentBalance, double transactionAmt) {
+        this.transactionId = transactionId;
         this.transactionType = transactionType;
         this.transferDate = transferDate;
         this.description = description;
-        this.preBalance = preBalance;
-        this.postBalance = postBalance;
+        this.currentBalance = currentBalance;
+        this.transactionAmt = transactionAmt;
+        
     }
     
 
@@ -53,21 +57,30 @@ public class Transaction {
         this.description = description;
     }
 
-    public int getPreBalance() {
-        return preBalance;
+    public double getCurrentBalance() {
+        return currentBalance;
     }
 
-    public void setPreBalance(int preBalance) {
-        this.preBalance = preBalance;
+    public void setCurrentBalance(double currentBalance) {
+        this.currentBalance = currentBalance;
     }
 
-    public int getPostBalance() {
-        return postBalance;
+    public double getTransactionAmt() {
+        return transactionAmt;
     }
 
-    public void setPostBalance(int postBalance) {
-        this.postBalance = postBalance;
+    public void setTransactionAmt(double transactionAmt) {
+        this.transactionAmt = transactionAmt;
     }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
+    
     
     
 }

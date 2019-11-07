@@ -16,6 +16,7 @@ public class CustomersDataService {
    private ArrayList<Customer> customers = new ArrayList<>();
    private static CustomersDataService allCustomers = new CustomersDataService();
    
+   
    public static CustomersDataService getInstance() {
        return allCustomers;
    }
@@ -59,17 +60,17 @@ public class CustomersDataService {
    }
    
    public Customer getCustomerById(String id) {
-       for (Customer customer : customers) {
+        for (Customer customer : customers) {
            if (customer.getId().equals(id)) {
-               return customer;
+                return customer;
            }
-       }
-       return null;
+        }
+       return new Customer();
    }
    
    public int getCustomerId(String securityCred) {
        for (Customer customer : customers) {
-           if (customer.getSecurtityCred().equals(securityCred)) {
+           if (customer.getSecurityCred().equals(securityCred)) {
                return Integer.parseInt(customer.getId());
            }
        }
@@ -93,10 +94,21 @@ public class CustomersDataService {
            } else if (!password.isEmpty()) {
                customerToEdit.setPassword(password);
            } else if (!securityCred.isEmpty()) {
-               customerToEdit.setSecurtityCred(securityCred);
+               customerToEdit.setSecurityCred(securityCred);
            }
            msg = "Customer's details has been updated";
        }
        return msg;
+   }
+   
+   public boolean updateCustomer(final Customer customer){
+       for(int i = 0; i < getCustomers().size(); i++){
+           Customer c = getCustomers().get(i);
+           if(c.getId().equals(customer.getId())){
+               customers.set(i, customer);
+               return true;
+           }
+       }
+       return false;
    }
 }
