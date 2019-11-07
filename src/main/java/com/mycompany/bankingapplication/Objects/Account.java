@@ -12,9 +12,10 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author yo
  */
-@XmlRootElement
+@XmlRootElement(name="Account")
 public class Account {
     private String id;
+    private String ownerId;
     private double balance;
     private String IBAN;
     private String accountType;
@@ -24,8 +25,9 @@ public class Account {
         
     }
     
-    public Account(String id, double balance, String IBAN, String accountType) {
+    public Account(String id, String ownerId, double balance, String IBAN, String accountType) {
         this.id = id;
+        this.ownerId = ownerId;
         this.balance = balance;
         this.IBAN = IBAN;
         this.accountType = accountType;
@@ -69,5 +71,13 @@ public class Account {
 
     public void setAccountType(String accountType) {
         this.accountType = accountType;
+    }
+    
+    public void setOwnerId(final String ownerId){
+        this.ownerId = ownerId;
+    }
+    
+    public String getOwnerId(){
+        return ownerId;
     }
 }

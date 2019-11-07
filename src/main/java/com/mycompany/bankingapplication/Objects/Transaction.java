@@ -5,10 +5,13 @@
  */
 package com.mycompany.bankingapplication.Objects;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @author yo
  */
+@XmlRootElement(name="Transaction")
 public class Transaction {
     private String transactionType;
     private String transferDate;

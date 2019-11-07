@@ -28,7 +28,8 @@ public class Customer {
     private boolean isAdmin;
             
     public Customer() {
-        
+        this.accounts = new ArrayList();
+        this.isAdmin = false;
     } 
 
     public Customer(String id, String firstName, String secondName, String address, String email, String password, String securtityCred) {
@@ -40,6 +41,7 @@ public class Customer {
         this.password = password;
         this.securtityCred = securtityCred;
         this.accounts = new ArrayList();
+        this.isAdmin = false;
     }
 
     public ArrayList<Account> getAccounts() {
