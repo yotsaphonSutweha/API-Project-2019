@@ -48,6 +48,7 @@ public class Test {
         Customer admin = new Customer("2", "admin", "user", "Abbey Street", "admin@gmail.com", "ajkshdakshd",  "110L");
         admin.setPrivilages(true);
         custOp.addCustomer(admin);
+        System.out.print(custOp.getCustomerById("1").getFirstName());
         return "test setup";
     }
     

@@ -5,11 +5,13 @@
  */
 package com.mycompany.bankingapplication;
 
+import com.mycompany.bankingapplication.Helpers.DebugMapper;
 import com.mycompany.bankingapplication.Objects.Account;
 import com.mycompany.bankingapplication.Objects.Customer;
 import com.mycompany.bankingapplication.Objects.CustomersDataService;
 import com.mycompany.bankingapplication.Services.AccountService;
 import java.util.ArrayList;
+import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -22,6 +24,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.glassfish.jersey.server.ResourceConfig;
 
 /**
  *
@@ -30,8 +33,11 @@ import javax.ws.rs.core.Response;
 @Path("/account")
 public class AccountResource {
     
-    private final CustomersDataService customers = CustomersDataService.getInstance();
-    private final AccountService service = new AccountService();
+    AccountService service = new AccountService();
+    CustomersDataService customers = CustomersDataService.getInstance();
+    ResourceConfig config = new ResourceConfig()
+        .register(DebugMapper.class);
+    
     @GET
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -67,12 +73,19 @@ public class AccountResource {
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response customerAccounts(@HeaderParam("customerId") final String customerId){
+        try{
         ArrayList<Account> accounts = service.getAllCustomerAccounts(customerId);
-        if(accounts.isEmpty()){
+        System.out.println(accounts.get(0).getIBAN());
+        if(!accounts.isEmpty()){
             GenericEntity<ArrayList<Account>> entity = new GenericEntity<ArrayList<Account>>(accounts){};
             return Response.status(Response.Status.OK).entity(entity).build();
         }
         return Response.status(Response.Status.NO_CONTENT).build();
+        }catch(Exception anyfuckingException){
+         System.out.println(anyfuckingException.getMessage());
+         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+       
+        }
     }
     
     @GET
@@ -81,6 +94,7 @@ public class AccountResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response getSpecificCustomerAccount(@HeaderParam("customerId") final String customerId, @PathParam("IBAN") final String IBAN){
         Customer customer = customers.getCustomerById(customerId);
+        System.out.print(customer.getFirstName());
         if(customer.getSecurtityCred() != null){
             Account account = customer.getCustomerAccountByIBAN(IBAN);
             if(account != null){
@@ -124,6 +138,7 @@ public class AccountResource {
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response deleteAccount(@HeaderParam("customerId") final String customerId, final String IBAN){
+        System.out.println(IBAN);
         Customer customer = customers.getCustomerById(customerId);
         if(customer.getSecurtityCred() != null){
             Account deletedAccount = service.deleteAccount(customer, IBAN);
