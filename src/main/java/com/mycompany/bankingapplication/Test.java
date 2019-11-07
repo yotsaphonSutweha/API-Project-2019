@@ -8,7 +8,6 @@ package com.mycompany.bankingapplication;
 
 import com.mycompany.bankingapplication.Objects.Account;
 import com.mycompany.bankingapplication.Objects.Customer;
-import com.mycompany.bankingapplication.Objects.Customers;
 import com.mycompany.bankingapplication.Objects.CustomersDataService;
 
 import java.io.ByteArrayInputStream;
@@ -36,18 +35,20 @@ import javax.ws.rs.core.Response;
  */
 @Path("/test")
 public class Test {
-//    Customer newCustomer = new Customer();
-//    ArrayList<Customer> newCustomers = new ArrayList<>();
-//    
+
     CustomersDataService custOp = CustomersDataService.getInstance();
     
     @GET
     @Produces("application/json")
     public String setupTestObjects(){
         Customer customer = new Customer("1", "Yo", "Suts", "Abbey Street", "yo@gmail.com", "ajkshdakshd",  "110L");
-        Account account = new Account("1", 100, "IBAN", "Current");
+        Account account = new Account("1","1", 100, "IBAN", "Current");
         customer.addAccount(account);
-        Customers.getInstance().addCustomer(customer);
+        custOp.addCustomer(customer);
+        Customer admin = new Customer("2", "admin", "user", "Abbey Street", "admin@gmail.com", "ajkshdakshd",  "110L");
+        admin.setPrivilages(true);
+        custOp.addCustomer(admin);
+        System.out.print(custOp.getCustomerById("1").getFirstName());
         return "test setup";
     }
     
