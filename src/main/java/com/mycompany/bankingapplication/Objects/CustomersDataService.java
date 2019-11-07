@@ -101,14 +101,18 @@ public class CustomersDataService {
        return msg;
    }
    
-   public boolean updateCustomer(final Customer customer){
-       for(int i = 0; i < getCustomers().size(); i++){
-           Customer c = getCustomers().get(i);
+   public boolean editCustomerDetails(final Customer customer){
+       for(int i = 0; i < customers.size(); i++){
+           Customer c = customers.get(i);
            if(c.getId().equals(customer.getId())){
                customers.set(i, customer);
                return true;
            }
        }
        return false;
+   }
+   
+   public ArrayList<Customer> getCustomerList(){
+       return customers;
    }
 }

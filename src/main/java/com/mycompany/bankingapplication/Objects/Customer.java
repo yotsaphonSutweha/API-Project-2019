@@ -23,10 +23,13 @@ public class Customer {
     private String email;
     private String password;
     private String securityCred;
-    private ArrayList<Account> accounts = new ArrayList();
+    private ArrayList<Account> accounts;
+    //not really a customer but for this project it will do fine
+    private boolean isAdmin;
             
     public Customer() {
         this.accounts = new ArrayList();
+        this.isAdmin = false;
     } 
 
     public Customer(String id, String firstName, String secondName, String address, String email, String password, String securityCred) {
@@ -38,6 +41,7 @@ public class Customer {
         this.password = password;
         this.securityCred = securityCred;
         this.accounts = new ArrayList();
+        this.isAdmin = false;
     }
 
     public ArrayList<Account> getAccounts() {
@@ -117,5 +121,11 @@ public class Customer {
         this.securityCred = securityCred;
     }
     
+    public boolean getPrivilages(){
+        return isAdmin;
+    }
     
+    public void setPrivilages(boolean isAdmin){
+        this.isAdmin = isAdmin;
+    }
 }

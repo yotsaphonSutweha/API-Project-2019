@@ -6,7 +6,6 @@
 package com.mycompany.bankingapplication;
 import com.mycompany.bankingapplication.Objects.Account;
 import com.mycompany.bankingapplication.Objects.Customer;
-import com.mycompany.bankingapplication.Objects.Customers;
 import com.mycompany.bankingapplication.Objects.CustomersDataService;
 import java.io.ByteArrayInputStream;
 import java.io.File;
