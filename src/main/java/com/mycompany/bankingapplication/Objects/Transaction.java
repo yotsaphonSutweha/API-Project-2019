@@ -13,11 +13,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name="Transaction")
 public class Transaction {
+    private String accountId;
     private String transactionId;
     private String transactionType;
     private String transferDate;
     private String description;
-    private double currentBalance;
+    private double postTransactionAmt;
     private double transactionAmt;
    
     
@@ -25,17 +26,34 @@ public class Transaction {
         
     }
 
-    public Transaction(String transactionId, String transactionType, String transferDate, String description, double currentBalance, double transactionAmt) {
+    public Transaction(String accountId, String transactionId, String transactionType, String transferDate, String description, double postTransactionAmt, double transactionAmt) {
+        this.accountId = accountId;
         this.transactionId = transactionId;
         this.transactionType = transactionType;
         this.transferDate = transferDate;
         this.description = description;
-        this.currentBalance = currentBalance;
+        this.postTransactionAmt = postTransactionAmt;
         this.transactionAmt = transactionAmt;
-        
     }
     
+          
 
+    public double getPostTransactionAmt() {
+        return postTransactionAmt;
+    }
+
+    public void setPostTransactionAmt(double postTransactionAmt) {
+        this.postTransactionAmt = postTransactionAmt;
+    }
+    
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+    
     public String getTransactionType() {
         return transactionType;
     }
@@ -59,15 +77,7 @@ public class Transaction {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public double getCurrentBalance() {
-        return currentBalance;
-    }
-
-    public void setCurrentBalance(double currentBalance) {
-        this.currentBalance = currentBalance;
-    }
-
+    
     public double getTransactionAmt() {
         return transactionAmt;
     }
