@@ -19,7 +19,7 @@ public class Account {
     private double balance;
     private String IBAN;
     private String accountType;
-    private ArrayList<Transaction> transactions;
+    private ArrayList<Transaction> transactions = new ArrayList<>();
 
     public Account() {
         
@@ -35,6 +35,10 @@ public class Account {
 
     public ArrayList<Transaction> getTransactions() {
         return transactions;
+    }
+    
+    public void addTransaction(final Transaction transaction){
+        transactions.add(transaction);
     }
 
     public void setTransactions(ArrayList<Transaction> transactions) {
