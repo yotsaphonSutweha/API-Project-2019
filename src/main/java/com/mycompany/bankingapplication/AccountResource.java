@@ -95,7 +95,7 @@ public class AccountResource {
     public Response getSpecificCustomerAccount(@HeaderParam("customerId") final String customerId, @PathParam("IBAN") final String IBAN){
         Customer customer = customers.getCustomerById(customerId);
         System.out.print(customer.getFirstName());
-        if(customer.getSecurtityCred() != null){
+        if(customer.getSecurityCred() != null){
             Account account = customer.getCustomerAccountByIBAN(IBAN);
             if(account != null){
                 return Response.status(Response.Status.OK).entity(account).build();
@@ -110,13 +110,13 @@ public class AccountResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createAccount(@HeaderParam("customerId") final String customerId, final Account account){
         Customer customer = customers.getCustomerById(customerId);
-        if(customer.getSecurtityCred() != null){
+        if(customer.getSecurityCred() != null){
             account.setOwnerId(customer.getId());
             customer.addAccount(account);
             customers.editCustomerDetails(customer);
             return Response.status(Response.Status.OK).entity(account).build();
         }
-        return Response.status(Response.Status.NOT_FOUND).entity("Customer not found").build();
+         return Response.status(Response.Status.NOT_FOUND).entity("Customer not found" + customerId).build();
     }
     
     @PUT
@@ -124,7 +124,7 @@ public class AccountResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateAccount(@HeaderParam("customerId") final String customerId, final Account newAccount){
         Customer customer = customers.getCustomerById(customerId);
-        if(customer.getSecurtityCred() != null){
+        if(customer.getSecurityCred() != null){
             Account updatedAccount = service.updateAccount(customer, newAccount);
             if(updatedAccount != null){
                 return Response.status(Response.Status.OK).entity(newAccount).build();
@@ -140,7 +140,7 @@ public class AccountResource {
     public Response deleteAccount(@HeaderParam("customerId") final String customerId, final String IBAN){
         System.out.println(IBAN);
         Customer customer = customers.getCustomerById(customerId);
-        if(customer.getSecurtityCred() != null){
+        if(customer.getSecurityCred() != null){
             Account deletedAccount = service.deleteAccount(customer, IBAN);
             if(deletedAccount != null){
                 return Response.status(Response.Status.OK).build();

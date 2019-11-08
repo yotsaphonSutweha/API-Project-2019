@@ -22,7 +22,7 @@ public class Customer {
     private String address;
     private String email;
     private String password;
-    private String securtityCred;
+    private String securityCred;
     private ArrayList<Account> accounts;
     //not really a customer but for this project it will do fine
     private boolean isAdmin;
@@ -32,14 +32,14 @@ public class Customer {
         this.isAdmin = false;
     } 
 
-    public Customer(String id, String firstName, String secondName, String address, String email, String password, String securtityCred) {
+    public Customer(String id, String firstName, String secondName, String address, String email, String password, String securityCred) {
         this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
         this.address = address;
         this.email = email;
         this.password = password;
-        this.securtityCred = securtityCred;
+        this.securityCred = securityCred;
         this.accounts = new ArrayList();
         this.isAdmin = false;
     }
@@ -113,13 +113,13 @@ public class Customer {
         this.password = password;
     }
 
-    public String getSecurtityCred() {
-        return securtityCred;
+    public String getSecurityCred() {
+        return securityCred;
     }
 
-    public void setSecurtityCred(String securtityCred) {
-        this.securtityCred = securtityCred;
-    } 
+    public void setSecurityCred(String securityCred) {
+        this.securityCred = securityCred;
+    }
     
     public boolean getPrivilages(){
         return isAdmin;
