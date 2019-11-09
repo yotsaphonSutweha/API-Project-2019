@@ -155,44 +155,56 @@ public class TransactionResource {
                     String accountId = account.getId();
                     
                     double rv_currentBalance = recieverAccount.getBalance();
-                    double rv_transactionAmount = newTransaction.getTransactionAmt();
                     double rv_postTransactionAmount ;
                     int rv_currentTransactionSize = recieverAccount.getTransactions().size();
                     String rv_accountId = recieverAccount.getId();
                     
-                    /*
-                   
-                    
-                    */
-                    
                     if(recieverAccount != null){
+                        
                         postTransactionAmount = currentBalance - transactionAmount ;
-                       
+                        rv_postTransactionAmount = rv_currentBalance - transactionAmount;
+                        
                         if (currentTransactionSize > 0) {
                           String newId = Integer.toString(currentTransactionSize + 1);
                             newTransaction.setTransactionId(newId);
                         } else if (currentTransactionSize == 0) {
                             newTransaction.setTransactionId("1");
                         }
-                    }
-                  
-                 
-                /*
-                
-              
-                
-                newTransaction.setAccountId(accountId);
-                newTransaction.setPostTransactionAmt(postTransactionAmount);
-                newTransaction.setTransferDate(transactionDateTime);
-                account.setBalance(postTransactionAmount);
-                account.addTransaction(newTransaction);
-                return Response.status(Response.Status.OK).entity(account).build();
-                     */
+                        
+                        if (rv_currentTransactionSize > 0) {
+                          String newId = Integer.toString(rv_currentTransactionSize + 1);
+                            newTransaction.setTransactionId(newId);
+                        } else if (rv_currentTransactionSize == 0) {
+                            newTransaction.setTransactionId("1");
+                        }
+                        
+                        newTransaction.setAccountId(accountId);
+                        newTransaction.setPostTransactionAmt(postTransactionAmount);
+                        newTransaction.setTransferDate(transactionDateTime);
+                        account.setBalance(postTransactionAmount);
+                        account.addTransaction(newTransaction);
+                        
                      
+                        newTransaction.setAccountId(rv_accountId);
+                        newTransaction.setPostTransactionAmt(rv_postTransactionAmount);
+                        newTransaction.setTransferDate(transactionDateTime);
+                        recieverAccount.setBalance(rv_postTransactionAmount);
+                        recieverAccount.addTransaction(newTransaction);
+                        
+                        return Response.status(Response.Status.OK).entity(account).build();
+                       
+        
+                    }
+                    return Response.status(Response.Status.NOT_FOUND).entity("Reciever Account Not Found").build();
+                 
                  }
+                
+                 return Response.status(Response.Status.NOT_FOUND).entity("Account Not Found").build();
             }
             
-         // code here    
+             return Response.status(Response.Status.BAD_REQUEST).entity("Security error").build();
         }
+        
+        return Response.status(Response.Status.BAD_REQUEST).entity("Oops! Something went wrong").build();
     }
 }
