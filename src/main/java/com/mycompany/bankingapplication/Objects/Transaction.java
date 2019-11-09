@@ -5,30 +5,55 @@
  */
 package com.mycompany.bankingapplication.Objects;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @author yo
  */
+@XmlRootElement(name="Transaction")
 public class Transaction {
+    private String accountId;
+    private String transactionId;
     private String transactionType;
     private String transferDate;
     private String description;
-    private int preBalance;
-    private int postBalance;
+    private double postTransactionAmt;
+    private double transactionAmt;
+   
     
     public Transaction() {
         
     }
 
-    public Transaction(String transactionType, String transferDate, String description, int preBalance, int postBalance) {
+    public Transaction(String accountId, String transactionId, String transactionType, String transferDate, String description, double postTransactionAmt, double transactionAmt) {
+        this.accountId = accountId;
+        this.transactionId = transactionId;
         this.transactionType = transactionType;
         this.transferDate = transferDate;
         this.description = description;
-        this.preBalance = preBalance;
-        this.postBalance = postBalance;
+        this.postTransactionAmt = postTransactionAmt;
+        this.transactionAmt = transactionAmt;
     }
     
+          
 
+    public double getPostTransactionAmt() {
+        return postTransactionAmt;
+    }
+
+    public void setPostTransactionAmt(double postTransactionAmt) {
+        this.postTransactionAmt = postTransactionAmt;
+    }
+    
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+    
     public String getTransactionType() {
         return transactionType;
     }
@@ -52,22 +77,23 @@ public class Transaction {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public int getPreBalance() {
-        return preBalance;
+    
+    public double getTransactionAmt() {
+        return transactionAmt;
     }
 
-    public void setPreBalance(int preBalance) {
-        this.preBalance = preBalance;
+    public void setTransactionAmt(double transactionAmt) {
+        this.transactionAmt = transactionAmt;
     }
 
-    public int getPostBalance() {
-        return postBalance;
+    public String getTransactionId() {
+        return transactionId;
     }
 
-    public void setPostBalance(int postBalance) {
-        this.postBalance = postBalance;
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
     }
+    
     
     
 }

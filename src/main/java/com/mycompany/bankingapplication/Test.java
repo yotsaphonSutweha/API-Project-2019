@@ -5,7 +5,11 @@
  */
 package com.mycompany.bankingapplication;
 
+
+import com.mycompany.bankingapplication.Objects.Account;
 import com.mycompany.bankingapplication.Objects.Customer;
+import com.mycompany.bankingapplication.Objects.CustomersDataService;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,6 +20,7 @@ import java.util.ArrayList;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.PathParam; 
@@ -30,15 +35,36 @@ import javax.ws.rs.core.Response;
  */
 @Path("/test")
 public class Test {
-//    Customer newCustomer = new Customer();
-//    ArrayList<Customer> newCustomers = new ArrayList<>();
-//    
+
+    CustomersDataService custOp = CustomersDataService.getInstance();
+    
+    @GET
+    @Produces("application/json")
+    public String setupTestObjects(){
+        Customer customer = new Customer("1", "Yo", "Suts", "Abbey Street", "yo@gmail.com", "ajkshdakshd",  "110L");
+        Account account = new Account("1","1", 100, "IBAN", "Current");
+        customer.addAccount(account);
+        custOp.addCustomer(customer);
+        Customer admin = new Customer("2", "admin", "user", "Abbey Street", "admin@gmail.com", "ajkshdakshd",  "110L");
+        admin.setPrivilages(true);
+        custOp.addCustomer(admin);
+        System.out.print(custOp.getCustomerById("1").getFirstName());
+        return "test setup";
+    }
+    
     @GET
     @Path("/{id}")
     public String test(@PathParam("id") int id){
         System.out.println("was it called");
         return "Hello World " + id;
     }
+    
+//    @GET
+//    @Path("/{id}")
+//    public String test(@PathParam("id") int id){
+//        System.out.println("was it called");
+//        return "Hello World " + id;
+//    }
    
     @GET
     @Path("/sayHello")
@@ -58,16 +84,4 @@ public class Test {
     public Customer getCustomer() {
         return new Customer("1", "Yo", "Suts", "Abbey Street", "yo@gmail.com", "ajkshdakshd",  "110L");
     }
-    
-    
-    
-//    @POST
-//    @Path("/createcustomer")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.TEXT_PLAIN)
-//    public String createCustomer(Customer customer) {
-//        newCustomers.add(customer);
-//        return "Done";
-//    }
-
 }
