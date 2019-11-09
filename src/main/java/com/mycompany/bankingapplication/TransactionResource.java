@@ -120,4 +120,79 @@ public class TransactionResource {
         }
         return Response.status(Response.Status.BAD_REQUEST).entity("Only withdrawal transaction is allowed").build();
     }
+    
+    
+    // Transfer to another account
+    /*
+       Loops througj account 
+    */
+    /*
+     @Path("/transfer/{IBAN}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+        public Response createWithdrawal(@HeaderParam("customerId") final String customerId, @PathParam("IBAN") final String IBAN, Transaction newTransaction) {
+
+    
+    */
+    @Path("/transfer/{IBAN}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response transferToAccount(@HeaderParam("customerId") final String customerId, @PathParam("IBAN") final String IBAN, Transaction newTransaction){
+        Customer sender = customerServices.getCustomerById(customerId);
+        Customer reciever = customerServices.getCustomerById(customerId);
+        if (newTransaction.getTransactionType().equalsIgnoreCase("transfer")) {
+            if (sender.getSecurityCred() != null) {
+                Account account = sender.getCustomerAccountByIBAN(IBAN);
+                Account recieverAccount = reciever.getCustomerAccountByIBAN(IBAN);
+                if(account != null){
+                    double currentBalance = account.getBalance();
+                    double transactionAmount = newTransaction.getTransactionAmt();
+                    double postTransactionAmount ;
+                    int currentTransactionSize = account.getTransactions().size();
+                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+                    LocalDateTime now = LocalDateTime.now();
+                    String transactionDateTime = dtf.format(now);
+                    String accountId = account.getId();
+                    
+                    double rv_currentBalance = recieverAccount.getBalance();
+                    double rv_transactionAmount = newTransaction.getTransactionAmt();
+                    double rv_postTransactionAmount ;
+                    int rv_currentTransactionSize = recieverAccount.getTransactions().size();
+                    String rv_accountId = recieverAccount.getId();
+                    
+                    /*
+                   
+                    
+                    */
+                    
+                    if(recieverAccount != null){
+                        postTransactionAmount = currentBalance - transactionAmount ;
+                       
+                        if (currentTransactionSize > 0) {
+                          String newId = Integer.toString(currentTransactionSize + 1);
+                            newTransaction.setTransactionId(newId);
+                        } else if (currentTransactionSize == 0) {
+                            newTransaction.setTransactionId("1");
+                        }
+                    }
+                  
+                 
+                /*
+                
+              
+                
+                newTransaction.setAccountId(accountId);
+                newTransaction.setPostTransactionAmt(postTransactionAmount);
+                newTransaction.setTransferDate(transactionDateTime);
+                account.setBalance(postTransactionAmount);
+                account.addTransaction(newTransaction);
+                return Response.status(Response.Status.OK).entity(account).build();
+                     */
+                     
+                 }
+            }
+            
+         // code here    
+        }
+    }
 }
