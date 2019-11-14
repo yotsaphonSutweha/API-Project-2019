@@ -77,6 +77,15 @@ public class CustomersDataService {
        return 0;
    }
    
+   public Customer getCustomerBySecurityCred(String securityCred) {
+       for (Customer customer : customers) {
+           if(customer.getSecurityCred().equals(securityCred)) {
+               return customer;
+           }
+       }
+       return new Customer();
+   }
+   
    public String editCustomerDetails(String id, String firstName, String secondName, String address, String email, String password, String securityCred) {
        String msg = "";
        Customer customerToEdit = this.getCustomerById(id);
