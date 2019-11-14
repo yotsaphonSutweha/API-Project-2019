@@ -71,6 +71,8 @@ public class CustomerResource {
         return Response.status(Response.Status.OK).entity("OK - No session").build();
     }
     
+   
+    
     @POST
     @Path("/createcustomer")
     @Consumes(MediaType.APPLICATION_JSON)
