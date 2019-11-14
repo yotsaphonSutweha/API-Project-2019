@@ -16,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -25,7 +26,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.PathParam; 
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 
 /**
@@ -35,6 +38,7 @@ import javax.ws.rs.core.Response;
 @Path("/customer")
 public class CustomerResource {
     CustomersDataService custOp = CustomersDataService.getInstance();
+    
     
     @POST
     @Path("/createcustomer")
@@ -50,8 +54,8 @@ public class CustomerResource {
     }
    
     
-    @POST
-    @Path("/deletecustomer")
+    @DELETE
+    @Path("/customers")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteCustomer(Customer customer) {
@@ -64,8 +68,20 @@ public class CustomerResource {
         return Response.status(Response.Status.NO_CONTENT).entity("Inputs required to delete a customer").build();
     }
     
-    @POST
-    @Path("/editcustomer/{id}")
+    @DELETE
+    @Path("/customers/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteCustomerById(@PathParam("id") String id) {
+        if (!id.isEmpty()) {
+           CustomersDataService.getInstance().deleteCustomerById(id);
+           return Response.status(Response.Status.OK).build();
+        } 
+        return Response.status(Response.Status.NO_CONTENT).entity("Id required to delete a customer").build();
+    }
+    
+    @PUT
+    @Path("/customers/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response editCustomerDetails(@PathParam("id") String id, Customer customer) {
@@ -84,7 +100,7 @@ public class CustomerResource {
     }
  
     @GET
-    @Path("/getcustomers")
+    @Path("/customers")
     @Produces(MediaType.APPLICATION_JSON)
     public ArrayList<Customer> getCustomers() {
         ArrayList<Customer> existingCustomers = CustomersDataService.getInstance().getCustomers();
@@ -95,7 +111,7 @@ public class CustomerResource {
     }
     
     @GET
-    @Path("/getcustomer/{id}")
+    @Path("/customers/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response  getCustomerById(@PathParam("id") String id) {
         if (id.isEmpty()) {
