@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 C:\Users\joshj\Documents\NCI\4th Year\Web App and APi\Project\API-Project-2019-master\src\main\java\com\mycompany\bankingapplication\Objects\Account.java
 C:\Users\joshj\Documents\NCI\4th Year\Web App and APi\Project\API-Project-2019-master\src\main\java\com\mycompany\bankingapplication\CustomerResource.java
 C:\Users\joshj\Documents\NCI\4th Year\Web App and APi\Project\API-Project-2019-master\src\main\java\com\mycompany\bankingapplication\Objects\CustomersDataService.java
@@ -10,3 +11,17 @@ C:\Users\joshj\Documents\NCI\4th Year\Web App and APi\Project\API-Project-2019-m
 C:\Users\joshj\Documents\NCI\4th Year\Web App and APi\Project\API-Project-2019-master\src\main\java\com\mycompany\bankingapplication\Objects\Customer.java
 C:\Users\joshj\Documents\NCI\4th Year\Web App and APi\Project\API-Project-2019-master\src\main\java\com\mycompany\bankingapplication\Services\TransactionService.java
 C:\Users\joshj\Documents\NCI\4th Year\Web App and APi\Project\API-Project-2019-master\src\main\java\com\mycompany\bankingapplication\Test.java
+=======
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Objects/Transaction.java
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/AccountResource.java
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Services/TransactionService.java
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Objects/CustomersDataService.java
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/CustomerResource.java
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/TransactionResource.java
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Helpers/DebugMapper.java
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/TestingClient.java
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Objects/Customer.java
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Objects/Account.java
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Services/AccountService.java
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Test.java
+>>>>>>> d7e550830c15eca34651bc534fcd3d19a50d4f8f
