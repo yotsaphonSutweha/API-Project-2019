@@ -30,7 +30,11 @@ import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
-
+import javax.ws.rs.PathParam; 
+import javax.ws.rs.core.Cookie;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.CookieParam;
 /**
  *
  * @author yo
@@ -39,6 +43,33 @@ import javax.ws.rs.core.Response;
 public class CustomerResource {
     CustomersDataService custOp = CustomersDataService.getInstance();
     
+    
+    @POST
+    @Path("/login")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response login(Customer customer){
+        String securityCred = customer.getSecurityCred();
+        Customer loginCustomer = CustomersDataService.getInstance().getCustomerBySecurityCred(securityCred);
+        if(!loginCustomer.equals(null)){
+            String loginId = loginCustomer.getId();
+            NewCookie cookie = new NewCookie("customerId", loginId);
+            return Response.status(Response.Status.OK).cookie(cookie).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).entity("Customer Does Not Exist").build();
+    }
+    
+    @POST
+    @Path("/logout")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response logout(@CookieParam("customerId") Cookie cookie){
+        if(cookie != null){
+            NewCookie newCookie = new NewCookie(cookie, null, 0, false);
+            return Response.status(Response.Status.OK).cookie(newCookie).build();
+        }
+        return Response.status(Response.Status.OK).entity("OK - No session").build();
+    }
     
     @POST
     @Path("/createcustomer")
