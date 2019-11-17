@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.CookieParam;
@@ -42,18 +43,19 @@ import javax.ws.rs.CookieParam;
 @Path("/customer")
 public class CustomerResource {
     CustomersDataService custOp = CustomersDataService.getInstance();
-    
+    CustomersDataService customers = CustomersDataService.getInstance();
     
     @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(Customer customer){
-        String securityCred = customer.getSecurityCred();
-        Customer loginCustomer = CustomersDataService.getInstance().getCustomerBySecurityCred(securityCred);
-        if(!loginCustomer.equals(null)){
+        String email = customer.getEmail();
+        String password = customer.getPassword();
+        Customer loginCustomer = customers.getCustomerByEmail(email);
+        if((!loginCustomer.equals(null)) && (loginCustomer.getPassword().equals(password))){
             String loginId = loginCustomer.getId();
-            NewCookie cookie = new NewCookie("customerId", loginId);
+            NewCookie cookie = new NewCookie("customerId", loginId, "/", "", "comment", 30000, false);
             return Response.status(Response.Status.OK).cookie(cookie).build();
         }
         return Response.status(Response.Status.NOT_FOUND).entity("Customer Does Not Exist").build();
@@ -61,32 +63,31 @@ public class CustomerResource {
     
     @POST
     @Path("/logout")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response logout(@CookieParam("customerId") Cookie cookie){
         if(cookie != null){
-            NewCookie newCookie = new NewCookie(cookie, null, 0, false);
-            return Response.status(Response.Status.OK).cookie(newCookie).build();
+            NewCookie mycookie= new NewCookie("customerId", null, "/", "", NewCookie.DEFAULT_VERSION, null, 0, new Date(), false, false);
+            return Response.status(Response.Status.OK).cookie(mycookie).build();
         }
         return Response.status(Response.Status.OK).entity("OK - No session").build();
     }
     
    
-    
+    // for general user
     @POST
-    @Path("/createcustomer")
+    @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createCustomer(Customer newCustomer) {
         if (newCustomer != null ) {
-            CustomersDataService.getInstance().addCustomer(newCustomer);
+            customers.addCustomer(newCustomer);
             return Response.status(Response.Status.OK).entity(newCustomer).build();
         } 
         return Response.status(Response.Status.NO_CONTENT).entity("Inputs required to create new customer").build();
 
     }
    
-    
+    // for admin
     @DELETE
     @Path("/customers")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -95,62 +96,73 @@ public class CustomerResource {
         String firstName = "";
         if (customer != null ) {
             firstName = customer.getFirstName();
-            CustomersDataService.getInstance().deleteCustomerbyName(firstName);
+            customers.deleteCustomerbyName(firstName);
             return Response.status(Response.Status.OK).build();
         } 
         return Response.status(Response.Status.NO_CONTENT).entity("Inputs required to delete a customer").build();
     }
     
+    // for admin only
     @DELETE
     @Path("/customers/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteCustomerById(@PathParam("id") String id) {
         if (!id.isEmpty()) {
-           CustomersDataService.getInstance().deleteCustomerById(id);
+           customers.deleteCustomerById(id);
            return Response.status(Response.Status.OK).build();
         } 
         return Response.status(Response.Status.NO_CONTENT).entity("Id required to delete a customer").build();
     }
     
-    @PUT
-    @Path("/customers/{id}")
+    // for modifying specific customer's details
+    @POST
+    @Path("/editdetails")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response editCustomerDetails(@PathParam("id") String id, Customer customer) {
-        if (customer != null) {
-            String firstName = customer.getFirstName();
-            String secondName = customer.getSecondName();
-            String address = customer.getAddress();
-            String email = customer.getEmail();
-            String password = customer.getPassword();
-            String securityCred = customer.getSecurityCred();
-            CustomersDataService.getInstance().editCustomerDetails(id, firstName, secondName, address, email, password, securityCred);
-            Customer updatedCustomer = CustomersDataService.getInstance().getCustomerById(id);
-            return Response.status(Response.Status.OK).entity(updatedCustomer).build();
-        } 
+    public Response editCustomerDetails(@CookieParam("customerId") Cookie cookie, Customer customer) {
+        String id = cookie.getValue();
+        try {
+            if (customer != null) {
+                String firstName = customer.getFirstName();
+                String secondName = customer.getSecondName();
+                String address = customer.getAddress();
+                String email = customer.getEmail();
+                String password = customer.getPassword();
+                String securityCred = customer.getSecurityCred();
+                customers.editCustomerDetails(id, firstName, secondName, address, email, password, securityCred);
+                Customer updatedCustomer = customers.getCustomerById(id);
+                return Response.status(Response.Status.OK).entity(updatedCustomer).build();
+            } 
+        } catch(Exception e) {
+                System.out.println(e);
+        }
         return Response.status(Response.Status.NO_CONTENT).entity("Inputs required to edit a customer").build();
     }
  
+    // For general use
     @GET
     @Path("/customers")
     @Produces(MediaType.APPLICATION_JSON)
     public ArrayList<Customer> getCustomers() {
-        ArrayList<Customer> existingCustomers = CustomersDataService.getInstance().getCustomers();
+        ArrayList<Customer> existingCustomers = customers.getCustomers();
         if (existingCustomers.isEmpty()) {
              return null;
         }
         return existingCustomers;
     }
     
+    // For specific customer details, get the customer based on ID
     @GET
-    @Path("/customers/{id}")
+    @Path("/details")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response  getCustomerById(@PathParam("id") String id) {
+    public Response  getCustomerById(@CookieParam("customerId") Cookie cookie) {
+        String id = cookie.getValue();
         if (id.isEmpty()) {
-            return Response.status(Response.Status.NO_CONTENT).entity("customer id required").build();
+            return Response.status(Response.Status.NO_CONTENT).entity("Please login").build();
         }
-        Customer customerBasedOnId = CustomersDataService.getInstance().getCustomerById(id);
+        Customer customerBasedOnId = customers.getCustomerById(id);
         return Response.status(Response.Status.OK).entity(customerBasedOnId).build();
     }
     
