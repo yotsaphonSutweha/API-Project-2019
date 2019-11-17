@@ -32,6 +32,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.format.DateTimeFormatter;  
 import java.time.LocalDateTime;    
+import javax.ws.rs.CookieParam;
+import javax.ws.rs.core.Cookie;
 
 /**
  *
@@ -43,11 +45,13 @@ public class TransactionResource {
     // AccountService accountServices = new AccountService();
     CustomersDataService customerServices = CustomersDataService.getInstance();
     
+    // For specific customer to make lodgement based on IBAN
     @POST
     @Path("/lodgement/{IBAN}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createLodgement(@HeaderParam("customerId") final String customerId, @PathParam("IBAN") final String IBAN, Transaction newTransaction) {
+    public Response createLodgement(@CookieParam("customerId") final Cookie cookie, @PathParam("IBAN") final String IBAN, Transaction newTransaction) {
+        String customerId = cookie.getValue();
         Customer customer = customerServices.getCustomerById(customerId);
         if (newTransaction.getTransactionType().equalsIgnoreCase("lodgement")) {
             if (customer.getSecurityCred() != null) {
@@ -82,11 +86,13 @@ public class TransactionResource {
         return Response.status(Response.Status.BAD_REQUEST).entity("Only lodgement transaction is allowed").build();
     }
     
+    // For specific customer to make withdrawal based on IBAN
     @POST
     @Path("/withdraw/{IBAN}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createWithdrawal(@HeaderParam("customerId") final String customerId, @PathParam("IBAN") final String IBAN, Transaction newTransaction) {
+    public Response createWithdrawal(@CookieParam("customerId") final Cookie cookie, @PathParam("IBAN") final String IBAN, Transaction newTransaction) {
+        String customerId = cookie.getValue();
         Customer customer = customerServices.getCustomerById(customerId);
         if (newTransaction.getTransactionType().equalsIgnoreCase("withdrawal")) {
             if (customer.getSecurityCred() != null) {
