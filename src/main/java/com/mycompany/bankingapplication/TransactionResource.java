@@ -134,16 +134,16 @@ public class TransactionResource {
 
     
     */
-    @Path("/transfer/{IBAN}")
+    @Path("/transfer/{IBAN}/to/{IBAN}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response transferToAccount(@HeaderParam("customerId") final String customerId, @PathParam("IBAN") final String IBAN, Transaction newTransaction){
-        Customer sender = customerServices.getCustomerById(customerId);
-        Customer reciever = customerServices.getCustomerById(customerId);
+    public Response transferToAccount(@HeaderParam("senderId") final String senderId, final String receiverId, @PathParam("IBAN") final String IBAN, String receiverIBAN , Transaction newTransaction){
+        Customer sender = customerServices.getCustomerById(senderId);
+        Customer receiver = customerServices.getCustomerById(receiverId);
         if (newTransaction.getTransactionType().equalsIgnoreCase("transfer")) {
             if (sender.getSecurityCred() != null) {
                 Account account = sender.getCustomerAccountByIBAN(IBAN);
-                Account recieverAccount = reciever.getCustomerAccountByIBAN(IBAN);
+                Account recieverAccount = receiver.getCustomerAccountByIBAN(receiverIBAN);
                 if(account != null){
                     double currentBalance = account.getBalance();
                     double transactionAmount = newTransaction.getTransactionAmt();
