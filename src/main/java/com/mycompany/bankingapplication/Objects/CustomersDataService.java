@@ -68,6 +68,24 @@ public class CustomersDataService {
        return new Customer();
    }
    
+   public Customer getCustomerBySecurityCred(String securityCred) {
+       for (Customer customer : customers) {
+           if(customer.getSecurityCred().equals(securityCred)) {
+               return customer;
+           }
+       }
+       return new Customer();
+   }
+   
+   public Customer getCustomerByEmail(String email) {
+       for (Customer customer : customers) {
+           if(customer.getEmail().equals(email)) {
+               return customer;
+           }
+       }
+       return new Customer();
+   }
+   
    public int getCustomerId(String securityCred) {
        for (Customer customer : customers) {
            if (customer.getSecurityCred().equals(securityCred)) {
