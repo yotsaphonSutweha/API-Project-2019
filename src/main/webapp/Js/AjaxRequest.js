@@ -1,19 +1,23 @@
-var url = "localhost:8080/api/";
+var url = 'http://localhost:8080/api/account/current';
 var requestMethod;
 var URI;
 
 function initRequest(request){
     requestType = request["method"];
     URI = request["uri"];
-    
 }
 
 function executeRequest(fData){
+    document.cookie = "customerId=1";
     $.ajax({
-        type: requestMethod,
-        url: url + URI,
+        type: 'GET',//requestMethod,
+        url: url,// + URI,
         //dataType: 'json',
-        data: fData,
+        //data: fData,
+        //headers: {"customerId":1},
+        xhrFields: {
+            withCredentials: true
+        },
         processData: false,
         contentType: false,
         success: function(data){

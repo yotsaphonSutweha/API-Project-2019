@@ -13,6 +13,7 @@ import com.mycompany.bankingapplication.Services.AccountService;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.CookieParam;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -21,6 +22,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -68,31 +70,35 @@ public class AccountResource {
         return Response.status(Response.Status.UNAUTHORIZED).entity("You must be an Admin to view another users account").build();
     }
     
+    // For specific customer, get the accounts on specific customer
     @GET
     @Path("/current")
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response customerAccounts(@HeaderParam("customerId") final String customerId){
+    public Response customerAccounts(@CookieParam("customerId") final Cookie cookie){
+        System.out.println("made it this far");
+        String customerId = cookie.getValue();
         try{
-        ArrayList<Account> accounts = service.getAllCustomerAccounts(customerId);
-        System.out.println(accounts.get(0).getIBAN());
-        if(!accounts.isEmpty()){
-            GenericEntity<ArrayList<Account>> entity = new GenericEntity<ArrayList<Account>>(accounts){};
-            return Response.status(Response.Status.OK).entity(entity).build();
-        }
-        return Response.status(Response.Status.NO_CONTENT).build();
+            ArrayList<Account> accounts = service.getAllCustomerAccounts(customerId);
+            System.out.println(accounts.get(0).getIBAN());
+            if(!accounts.isEmpty()){
+                GenericEntity<ArrayList<Account>> entity = new GenericEntity<ArrayList<Account>>(accounts){};
+                return Response.status(Response.Status.OK).entity(entity).build();
+            }
+            return Response.status(Response.Status.NO_CONTENT).build();
         }catch(Exception anyfuckingException){
-         System.out.println(anyfuckingException.getMessage());
-         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-       
+            System.out.println(anyfuckingException.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
     
+    // For specific customer to get specific account by IBAN
     @GET
     @Path("/current/{IBAN}")
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response getSpecificCustomerAccount(@HeaderParam("customerId") final String customerId, @PathParam("IBAN") final String IBAN){
+    public Response getSpecificCustomerAccount(@CookieParam("customerId") final Cookie cookie, @PathParam("IBAN") final String IBAN){
+        String customerId = cookie.getValue();
         Customer customer = customers.getCustomerById(customerId);
         System.out.print(customer.getFirstName());
         if(customer.getSecurityCred() != null){
@@ -105,10 +111,14 @@ public class AccountResource {
         return Response.status(Response.Status.NOT_FOUND).entity("Customer not found").build();
     }
     
+    // For specific customer to create a new account
     @POST
+    // @Path("/{customerId}")
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createAccount(@HeaderParam("customerId") final String customerId, final Account account){
+    public Response createAccount(@CookieParam("customerId") final Cookie cookie, final Account account){
+        System.out.println(cookie.getValue());
+        String customerId = cookie.getValue();
         Customer customer = customers.getCustomerById(customerId);
         if(customer.getSecurityCred() != null){
             account.setOwnerId(customer.getId());
@@ -119,10 +129,12 @@ public class AccountResource {
          return Response.status(Response.Status.NOT_FOUND).entity("Customer not found" + customerId).build();
     }
     
+    // For specific customer to update the existing account
     @PUT
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateAccount(@HeaderParam("customerId") final String customerId, final Account newAccount){
+    public Response updateAccount(@CookieParam("customerId") final Cookie cookie, final Account newAccount){
+        String customerId = cookie.getValue();
         Customer customer = customers.getCustomerById(customerId);
         if(customer.getSecurityCred() != null){
             Account updatedAccount = service.updateAccount(customer, newAccount);
@@ -134,14 +146,16 @@ public class AccountResource {
         return Response.status(Response.Status.NOT_FOUND).entity("Customer not found").build();
     }
     
+    // For specific customer to delete the existing account
     @DELETE
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response deleteAccount(@HeaderParam("customerId") final String customerId, final String IBAN){
-        System.out.println(IBAN);
+    public Response deleteAccount(@CookieParam("customerId") final Cookie cookie, final Account account){
+        // System.out.println(IBAN);
+        String customerId = cookie.getValue();
         Customer customer = customers.getCustomerById(customerId);
         if(customer.getSecurityCred() != null){
-            Account deletedAccount = service.deleteAccount(customer, IBAN);
+            Account deletedAccount = service.deleteAccount(customer, account.getIBAN());
             if(deletedAccount != null){
                 return Response.status(Response.Status.OK).build();
             }
