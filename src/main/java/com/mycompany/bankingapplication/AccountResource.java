@@ -75,11 +75,10 @@ public class AccountResource {
     @Path("/current")
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response customerAccounts(@CookieParam("customerId") final Cookie cookie){
-        System.out.println("made it this far");
-        String customerId = cookie.getValue();
+    public Response customerAccounts(@HeaderParam("customerId") final String customerId){
         try{
             ArrayList<Account> accounts = service.getAllCustomerAccounts(customerId);
+            System.out.println("CUSTOMER ID IS: " + customerId);
             System.out.println(accounts.get(0).getIBAN());
             if(!accounts.isEmpty()){
                 GenericEntity<ArrayList<Account>> entity = new GenericEntity<ArrayList<Account>>(accounts){};
@@ -87,6 +86,7 @@ public class AccountResource {
             }
             return Response.status(Response.Status.NO_CONTENT).build();
         }catch(Exception anyfuckingException){
+            anyfuckingException.printStackTrace();
             System.out.println(anyfuckingException.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
@@ -97,8 +97,7 @@ public class AccountResource {
     @Path("/current/{IBAN}")
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response getSpecificCustomerAccount(@CookieParam("customerId") final Cookie cookie, @PathParam("IBAN") final String IBAN){
-        String customerId = cookie.getValue();
+    public Response getSpecificCustomerAccount(@HeaderParam("customerId") final String customerId, @PathParam("IBAN") final String IBAN){
         Customer customer = customers.getCustomerById(customerId);
         System.out.print(customer.getFirstName());
         if(customer.getSecurityCred() != null){
@@ -116,9 +115,7 @@ public class AccountResource {
     // @Path("/{customerId}")
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createAccount(@CookieParam("customerId") final Cookie cookie, final Account account){
-        System.out.println(cookie.getValue());
-        String customerId = cookie.getValue();
+    public Response createAccount(@HeaderParam("customerId") final String customerId, final Account account){
         Customer customer = customers.getCustomerById(customerId);
         if(customer.getSecurityCred() != null){
             account.setOwnerId(customer.getId());
@@ -133,8 +130,7 @@ public class AccountResource {
     @PUT
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateAccount(@CookieParam("customerId") final Cookie cookie, final Account newAccount){
-        String customerId = cookie.getValue();
+    public Response updateAccount(@HeaderParam("customerId") final String customerId, final Account newAccount){
         Customer customer = customers.getCustomerById(customerId);
         if(customer.getSecurityCred() != null){
             Account updatedAccount = service.updateAccount(customer, newAccount);
@@ -150,9 +146,7 @@ public class AccountResource {
     @DELETE
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response deleteAccount(@CookieParam("customerId") final Cookie cookie, final Account account){
-        // System.out.println(IBAN);
-        String customerId = cookie.getValue();
+    public Response deleteAccount(@HeaderParam("customerId") final String customerId, final Account account){
         Customer customer = customers.getCustomerById(customerId);
         if(customer.getSecurityCred() != null){
             Account deletedAccount = service.deleteAccount(customer, account.getIBAN());

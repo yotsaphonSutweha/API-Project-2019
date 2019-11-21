@@ -1,23 +1,20 @@
-var url = 'http://localhost:8080/api/account/current';
+var url = 'http://localhost:8080/api/';
 var requestMethod;
 var URI;
+var userId;
 
 function initRequest(request){
+    userId = '1'; //document.cookie;
     requestType = request["method"];
     URI = request["uri"];
 }
 
-function executeRequest(fData){
-    document.cookie = "customerId=1";
+function executeRequest(requestBody){
     $.ajax({
-        type: 'GET',//requestMethod,
-        url: url,// + URI,
-        //dataType: 'json',
-        //data: fData,
-        //headers: {"customerId":1},
-        xhrFields: {
-            withCredentials: true
-        },
+        type: requestMethod,
+        url: url + URI,
+        data: requestBody,
+        headers: {'customerId':userId},
         processData: false,
         contentType: false,
         success: function(data){

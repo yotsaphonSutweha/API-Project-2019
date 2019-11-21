@@ -50,8 +50,7 @@ public class TransactionResource {
     @Path("/lodgement/{IBAN}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createLodgement(@CookieParam("customerId") final Cookie cookie, @PathParam("IBAN") final String IBAN, Transaction newTransaction) {
-        String customerId = cookie.getValue();
+    public Response createLodgement(@HeaderParam("customerId") final String customerId, @PathParam("IBAN") final String IBAN, Transaction newTransaction) {
         Customer customer = customerServices.getCustomerById(customerId);
         if (newTransaction.getTransactionType().equalsIgnoreCase("lodgement")) {
             if (customer.getSecurityCred() != null) {
@@ -91,8 +90,7 @@ public class TransactionResource {
     @Path("/withdraw/{IBAN}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createWithdrawal(@CookieParam("customerId") final Cookie cookie, @PathParam("IBAN") final String IBAN, Transaction newTransaction) {
-        String customerId = cookie.getValue();
+    public Response createWithdrawal(@HeaderParam("customerId") final String customerId, @PathParam("IBAN") final String IBAN, Transaction newTransaction) {
         Customer customer = customerServices.getCustomerById(customerId);
         if (newTransaction.getTransactionType().equalsIgnoreCase("withdrawal")) {
             if (customer.getSecurityCred() != null) {
