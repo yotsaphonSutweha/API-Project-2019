@@ -88,7 +88,7 @@ public class TransactionResource {
     
     // For specific customer to make withdrawal based on IBAN
     @POST
-    @Path("/withdraw/{IBAN}")
+    @Path("/withdrawal/{IBAN}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createWithdrawal(@CookieParam("customerId") final Cookie cookie, @PathParam("IBAN") final String IBAN, Transaction newTransaction) {
