@@ -58,14 +58,15 @@ public class CustomerResource {
             NewCookie cookie = new NewCookie("customerId", loginId, "/", "", "comment", 30000, false);
             return Response.status(Response.Status.OK).cookie(cookie).build();
         }
-        return Response.status(Response.Status.NOT_FOUND).entity("Customer Does Not Exist").build();
+        //no hints for hacker scummmm
+        return Response.status(Response.Status.UNAUTHORIZED).entity("Login credentials incorect").build();
     }
     
     @POST
     @Path("/logout")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response logout(@CookieParam("customerId") Cookie cookie){
-        if(cookie != null){
+    public Response logout(@HeaderParam("customerId") String cookie){
+        if(!cookie.isEmpty()){
             NewCookie mycookie= new NewCookie("customerId", null, "/", "", NewCookie.DEFAULT_VERSION, null, 0, new Date(), false, false);
             return Response.status(Response.Status.OK).cookie(mycookie).build();
         }
@@ -79,9 +80,14 @@ public class CustomerResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createCustomer(Customer newCustomer) {
-        if (newCustomer != null ) {
-            customers.addCustomer(newCustomer);
-            return Response.status(Response.Status.OK).entity(newCustomer).build();
+        if (!newCustomer.getEmail().isEmpty() && !newCustomer.getAddress().isEmpty() && !newCustomer.getFirstName().isEmpty() 
+                && !newCustomer.getSecondName().isEmpty() && !newCustomer.getPassword().isEmpty() && !newCustomer.getSecurityCred().isEmpty()) {
+            Customer tmp = customers.getCustomerByEmail(newCustomer.getEmail());
+            if(!tmp.getSecurityCred().isEmpty()){
+                customers.addCustomer(newCustomer);
+                return Response.status(Response.Status.OK).entity(newCustomer).build();
+            }
+            return Response.status(Response.Status.BAD_REQUEST).entity("Email Has Already Been Taken").build();
         } 
         return Response.status(Response.Status.NO_CONTENT).entity("Inputs required to create new customer").build();
 
@@ -144,12 +150,12 @@ public class CustomerResource {
     @GET
     @Path("/customers")
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<Customer> getCustomers() {
+    public Response getCustomers() {
         ArrayList<Customer> existingCustomers = customers.getCustomers();
         if (existingCustomers.isEmpty()) {
-             return null;
+             return Response.status(Response.Status.NOT_FOUND).entity("Customer not found").build();
         }
-        return existingCustomers;
+        return Response.status(Response.Status.NOT_FOUND).entity(existingCustomers).build();
     }
     
     // For specific customer details, get the customer based on ID

@@ -112,7 +112,6 @@ public class AccountResource {
     
     // For specific customer to create a new account
     @POST
-    // @Path("/{customerId}")
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createAccount(@HeaderParam("customerId") final String customerId, final Account account){
