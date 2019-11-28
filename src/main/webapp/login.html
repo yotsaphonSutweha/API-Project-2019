@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Login Page</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" ></script>
+        <script src="Js/AjaxRequest.js"></script> 
+<!--        <button onclick="executeRequest(null)"></button>
+        <script>
+            //this shouldn't really be here but for testing porposes its fine
+            var request = [];
+            request["method"] = "GET";
+            request["uri"] = "account/current";
+            initRequest(request);
+        </script>-->
+        <input type="text" name="email" placeholder="Email" id="emailId">
+        <input type="text" name="password" placeholder="Password" id="passwordId">
+        <button id="submitBtn" onclick=executeLogin()>Login</button>
+        <script>
+            function executeLogin() {
+                var emailText = $("#emailId").val();
+                var passwordText = $("#passwordId").val();
+                
+                dataPayload = {
+                    "email": emailText,
+                    "password": passwordText
+                }
+                
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/api/customer/login",
+                    data: JSON.stringify(dataPayload),
+                    dataType: "json",
+                    contentType: "application/json",
+                    crossDomain: true,
+                    success: function(data) {
+                        try {
+                            var newdata = data;
+                            console.log("The user is logged in " + newdata);
+                        } catch (e) {
+                            console.log("caught error " + e);
+                        }
+                    },
+                    error:function(xhrm, statusText){
+                        console.debug("Error: " + xhrm.status + " " + statusText);
+                    }
+                });
+                
+            }
+        </script>
+    </body>
+</html>
