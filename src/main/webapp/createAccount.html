@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Create account</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" ></script>
+        <script src="Js/AjaxRequest.js"></script> 
+        <input type="text" name="id" placeholder="Id" id="idTemp">
+        <input type="text" name="balance" placeholder="Balance" id="balanceId">
+        <input type="text" name="IBAN" placeholder="IBAN" id ="IBANId">  
+        <input type="text" name="accountType" placeholder="Type of Account" id="accountTypeId">
+        <button id="submitBtn" onclick=executeCreateAccount()>Create Account</button>
+        <script>
+            function executeCreateAccount() {
+                var idText = $("#idTemp").val();
+                var balanceText = $("#balanceId").val();
+                var IBANText = $("#IBANId").val();
+                var accountTypeText = $("#accountTypeId").val();
+                dataPayload = {
+                    "id": idText,
+                    "balance": balanceText,
+                    "IBAN": IBANText,
+                    "accountType": accountTypeText
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/api/account",
+                    data: JSON.stringify(dataPayload),
+                    dataType: "json",
+                    contentType: "application/json",
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    crossDomain: true,
+                    success: function(data) {
+                        try {
+                            var newdata = data;
+                            console.log("A new account is created" + newdata["id"]);
+                        } catch (e) {
+                            console.log("caught error " + e);
+                        }
+                    },
+                    error:function(xhrm, statusText){
+                        console.debug("Error: " + xhrm.status + " " + statusText);
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>

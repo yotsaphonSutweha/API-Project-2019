@@ -12,5 +12,77 @@ and open the template in the editor.
     </head>
     <body>
         <div>TODO write content</div>
+<!--        <button onclick="executeRequest(null)"></button>-->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" ></script>
+<!--        <script src="Js/AjaxRequest.js"></script> -->
+<!--        <script>
+            //this shouldn't really be here but for testing porposes its fine
+            var request = [];
+            // request["method"] = "POST";
+            request["uri"] = "customer/register";
+            initRequest(request);
+        </script>-->
+        <input type="text" name="email" placeholder="Email" id="emailId">
+        <input type="text" name="password" placeholder="Password" id="passwordId">
+        <input type="text" name="securityCred" placeholder="Security credential" id ="securityCredId">  
+        <input type="text" name="firstName" placeholder="First Name" id="firstNameId">
+        <input type="text" name="secondName" placeholder="Second Name" id="secondNameId">
+        <input type="text" name="address" placeholder="Full Address" id="addressId">
+<!--        <script src="Js/AjaxRequest.js"></script> 
+        <script>
+            var emailText = $("#emailId").val();
+            var passwordText = $("#passwordId").val();
+            var securityCredText = $("#securityCredId").val();
+            var firstNameText = $("#firstNameId").val();
+            var secondNameText = $("#secondNameId").val();
+            var addressText = $("#addressId").val();
+            dataPayload = {
+                "email": emailText,
+                "password": passwordText,
+                "securityCred":securityCredText,
+                "firstName": firstNameText,
+                "secondName": secondNameText,
+                "address": addressText
+            }
+        </script>-->
+        <button id="submitBtn" onclick=executeRegister()>Register</button>
+        <script>
+            function executeRegister() {
+                var emailText = $("#emailId").val();
+                var passwordText = $("#passwordId").val();
+                var securityCredText = $("#securityCredId").val();
+                var firstNameText = $("#firstNameId").val();
+                var secondNameText = $("#secondNameId").val();
+                var addressText = $("#addressId").val();
+                dataPayload = {
+                    "email": emailText,
+                    "password": passwordText,
+                    "securityCred":securityCredText,
+                    "firstName": firstNameText,
+                    "secondName": secondNameText,
+                    "address": addressText
+                }
+    
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/api/customer/register",
+                    data: JSON.stringify(dataPayload),
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function(data) {
+                        try {
+                            var newdata = data;
+                            console.log("New user is created with the id of " + newdata["id"]);
+                        } catch (e) {
+                            console.log("caught error " + e);
+                        }
+                    },
+                    error:function(xhrm, statusText){
+                        console.debug("Error: " + xhrm.status + " " + statusText);
+                    }
+                });
+            }
+        </script>  
     </body>
 </html>
