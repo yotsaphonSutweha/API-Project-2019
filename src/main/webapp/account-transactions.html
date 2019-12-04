@@ -44,7 +44,7 @@ and open the template in the editor.
                 }else if(type === 'lodge'){
                     method = 'POST';
                     URI = 'transaction/lodgement/' + IBAN;
-                    amount = $('#lodgementAmount').val();
+                    amount = $('#transOption').val();
                     dataPayload ={
                         'transactionAmt':amount,
                         'transactionType': 'lodgement'
@@ -52,7 +52,7 @@ and open the template in the editor.
                 }else if(type === 'withdraw'){
                     method = 'POST';
                     URI = 'transaction/withdrawal/' + IBAN;
-                    amount = $('#lodgementAmount').val();
+                    amount = $('#transOption').val();
                     dataPayload ={
                         "transactionAmt":amount,
                         "transactionType":'withdrawal'

@@ -15,7 +15,9 @@ and open the template in the editor.
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" ></script>
         <script src="Js/AjaxRequest.js"></script> 
         
-        <div class="accountList"></div>
+        <div class="accountList" style="width:50%">
+            <table id="help" style="width:100%"></table>
+        </div>
         <button onclick=clickX()>click</button>
         <script>
             function clickX() {
@@ -23,26 +25,27 @@ and open the template in the editor.
                 type: "GET",
                 processData: true,
                 url: "http://localhost:8080/api/account/current",
+                //mine
+                //dataType:'json',
+                //data:"",
+                //notmine
                 xhrFields: {
                     withCredentials: true
                 },
                 crossDomain: true,
+                
+                
                 success: function(data) {
                     try {
-                        for(var i = 0; i < data.length; i++) {
-                            var IBAN = data[i]['IBAN']
-                            console.log(IBAN);
-                            $('.accountList').append('<p id="' + data[i]['IBAN'] +'">' + data[i]['accountType'] +'</p>');
-                            $('#' + IBAN).attr('onClick', 'loadAccount("' + IBAN + '");')
-                            /*$('#' + IBAN).on("click", function(IBAN){
-                                window.localStorage.removeItem('IBAN');
-                                console.log(IBAN);
-                                window.localStorage.setItem("IBAN", IBAN);
-                                console.log(localStorage.getItem("IBAN"));
-                                alert('clicked' + IBAN);
-                            })*/
-                        }
-                        console.log(data);
+                        $.each(data, function(i, item){
+                            var $tr = $('<tr id="' + item.IBAN +'">').append(
+                               $('<td>').text(item.accountType),
+                               $('<td>').text(item.IBAN),
+                               $('<td>').text(item.balance),
+                            ).appendTo('#help');
+                            $('#' + item.IBAN).attr('onClick', 'loadAccount("' + item.IBAN + '");')
+                            console.log($tr.wrap('<p>').html());
+                        });
                     } catch (e) {
                         console.log(e);
                     }
@@ -50,7 +53,7 @@ and open the template in the editor.
                 error: function(xhrm, statusText) {
                     console.log("Error: " + xhrm.status + " " + statusText);
                 }
-                })
+                });
             }
             
             function loadAccount(IBAN){
@@ -59,7 +62,7 @@ and open the template in the editor.
                 console.log(IBAN);
                 window.localStorage.setItem("IBAN", IBAN);
                 console.log(localStorage.getItem("IBAN"));
-                alert('clicked');
+                window.location.href = 'account-transactions.html';
             }
         </script>
     </body>
