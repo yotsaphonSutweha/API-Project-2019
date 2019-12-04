@@ -42,7 +42,7 @@ public class Test {
     @Produces("application/json")
     public String setupTestObjects(){
         Customer customer = new Customer("1", "Yo", "Suts", "Abbey Street", "yo@gmail.com", "ajkshdakshd",  "110L");
-        Account account = new Account("1","1", 100, "IBAN", "Current");
+        Account account = new Account(1,"1", 100, "IBAN", "Current");
         customer.addAccount(account);
         custOp.addCustomer(customer);
         Customer admin = new Customer("2", "admin", "user", "Abbey Street", "admin@gmail.com", "ajkshdakshd",  "110L");

@@ -34,6 +34,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;    
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.core.Cookie;
+import javax.ws.rs.core.GenericEntity;
 
 /**
  *
@@ -42,16 +43,17 @@ import javax.ws.rs.core.Cookie;
 @Path("/transaction")
 public class TransactionResource {
     // TransactionService transactionServices = new TransactionService();
-    // AccountService accountServices = new AccountService();
     CustomersDataService customerServices = CustomersDataService.getInstance();
     AccountService service = new AccountService();
+    
     // For specific customer to make lodgement based on IBAN
     @POST
     @Path("/lodgement/{IBAN}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createLodgement(@CookieParam("customerId") final Cookie cookie, @PathParam("IBAN") final String IBAN, Transaction newTransaction) {
-        Customer customer = customerServices.getCustomerById(cookie.getValue());
+        String customerId = cookie.getValue();
+        Customer customer = customerServices.getCustomerById(customerId);
         if (newTransaction.getTransactionType().equalsIgnoreCase("lodgement")) {
             if (customer.getSecurityCred() != null) {
             Account account = customer.getCustomerAccountByIBAN(IBAN);
@@ -59,11 +61,12 @@ public class TransactionResource {
                 double currentBalance = account.getBalance();
                 double transactionAmount = newTransaction.getTransactionAmt();
                 double postTransactionAmount = currentBalance + transactionAmount;
+                System.out.print(postTransactionAmount);
                 int currentTransactionSize = account.getTransactions().size();
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
                 LocalDateTime now = LocalDateTime.now();
                 String transactionDateTime = dtf.format(now);
-                String accountId = account.getId();
+                int accountId = account.getId();
                 
                 if (currentTransactionSize > 0) {
                     String newId = Integer.toString(currentTransactionSize + 1);
@@ -91,7 +94,8 @@ public class TransactionResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createWithdrawal(@CookieParam("customerId") final Cookie cookie, @PathParam("IBAN") final String IBAN, Transaction newTransaction) {
-        Customer customer = customerServices.getCustomerById(cookie.getValue());
+        String customerId = cookie.getValue();
+        Customer customer = customerServices.getCustomerById(customerId);
         if (newTransaction.getTransactionType().equalsIgnoreCase("withdrawal")) {
             if (customer.getSecurityCred() != null) {
             Account account = customer.getCustomerAccountByIBAN(IBAN);
@@ -103,7 +107,7 @@ public class TransactionResource {
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
                 LocalDateTime now = LocalDateTime.now();
                 String transactionDateTime = dtf.format(now);
-                String accountId = account.getId();
+                int accountId = account.getId();
                 
                 if (currentTransactionSize > 0) {
                     String newId = Integer.toString(currentTransactionSize + 1);
@@ -159,7 +163,7 @@ public class TransactionResource {
                         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
                         LocalDateTime now = LocalDateTime.now();
                         String transactionDateTime = dtf.format(now);
-                        String accountId = currentAccount.getId();
+                        int accountId = currentAccount.getId();
                         if (currentTransactionSize > 0) {
                             String newId = Integer.toString(currentTransactionSize + 1);
                             newTransaction.setTransactionId(newId);
