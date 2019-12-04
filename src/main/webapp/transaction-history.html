@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Account Transaction</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel='stylesheet' type='text/css' href='style.css'>
+    </head>
+    <body>
+        <div id="accountDetails">
+            <h1 id="accountName">Account Name</h1>
+            <p id="IBAN">IBAN</p>
+            <h3 id="balance">Balance: </h3>
+        </div>
+        <div id="transactionsWrapper">
+            <div class="detailHeader">
+                <h1>Transactions</h1>
+            </div>
+            <hr>
+            <div id="transactions">
+            </div>
+        </div>
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" ></script>
+        <script>
+            function loadTransactions() {
+                var IBAN = localStorage.getItem('IBAN');
+                $.ajax({
+                type: "GET",
+                processData: true,
+                dataType: "json",
+                contentType: "application/json",
+                url: "http://localhost:8080/api/transaction/" + IBAN,
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function(data) {
+                    try {
+                        $('#accountName').text(data['accountType'])
+                        $('#IBAN').text(data['IBAN'])
+                        $('#balance').text('Balance: ' + data['balance'])
+                        for(var i = 0; i < data['transactions'].length; i++) {
+                            var date = data['transactions'][i]['transferDate']
+                            var day = new Date(date).getDay()
+                            var month = new Date(date).getMonth()
+                            var year = new Date(date).getYear()
+                            
+                            var type = data['transactions'][i]['transactionType']
+                            var symbol = '+'
+                            if(type === 'withdrawal'){
+                                symbol = '-'
+                            }
+                            $("#transactions").append('<div class="flexWrapper" id="TW' + i +'">');    
+                            $("#TW" + i).append('<h4>' + day + '/' + month +'/' + year +'</h4>');
+                            $("#TW" + i).append('<h4>' + data['transactions'][i]['transactionType'] +'</h4>');
+                            $("#TW" + i).append('<h4>' + symbol +'&euro; ' + data['transactions'][i]['transactionAmt'] +'</h4>');
+                            $("#transactions").append('<hr>')
+                        }
+                        console.log(data);
+                    } catch (e) {
+                        console.log(e);
+                    }
+                },
+                error: function(xhrm, statusText) {
+                    console.log("Error: " + xhrm.status + " " + statusText);
+                }
+                })
+            }
+            loadTransactions();
+        </script>
+    </body>
+</html>

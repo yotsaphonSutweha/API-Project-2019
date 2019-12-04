@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name="Transaction")
 public class Transaction {
-    private String accountId;
+    private int accountId;
     private String transactionId;
     private String transactionType;
     private String transferDate;
@@ -26,7 +26,7 @@ public class Transaction {
         
     }
 
-    public Transaction(String accountId, String transactionId, String transactionType, String transferDate, String description, double postTransactionAmt, double transactionAmt) {
+    public Transaction(int accountId, String transactionId, String transactionType, String transferDate, String description, double postTransactionAmt, double transactionAmt) {
         this.accountId = accountId;
         this.transactionId = transactionId;
         this.transactionType = transactionType;
@@ -46,11 +46,11 @@ public class Transaction {
         this.postTransactionAmt = postTransactionAmt;
     }
     
-    public String getAccountId() {
+    public int getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(String accountId) {
+    public void setAccountId(int accountId) {
         this.accountId = accountId;
     }
     
@@ -93,7 +93,4 @@ public class Transaction {
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
     }
-    
-    
-    
 }

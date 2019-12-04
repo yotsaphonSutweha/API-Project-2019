@@ -34,6 +34,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;    
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.core.Cookie;
+import javax.ws.rs.core.GenericEntity;
 
 /**
  *
@@ -42,15 +43,16 @@ import javax.ws.rs.core.Cookie;
 @Path("/transaction")
 public class TransactionResource {
     // TransactionService transactionServices = new TransactionService();
-    // AccountService accountServices = new AccountService();
     CustomersDataService customerServices = CustomersDataService.getInstance();
+    AccountService service = new AccountService();
     
     // For specific customer to make lodgement based on IBAN
     @POST
     @Path("/lodgement/{IBAN}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createLodgement(@HeaderParam("customerId") final String customerId, @PathParam("IBAN") final String IBAN, Transaction newTransaction) {
+    public Response createLodgement(@CookieParam("customerId") final Cookie cookie, @PathParam("IBAN") final String IBAN, Transaction newTransaction) {
+        String customerId = cookie.getValue();
         Customer customer = customerServices.getCustomerById(customerId);
         if (newTransaction.getTransactionType().equalsIgnoreCase("lodgement")) {
             if (customer.getSecurityCred() != null) {
@@ -59,11 +61,12 @@ public class TransactionResource {
                 double currentBalance = account.getBalance();
                 double transactionAmount = newTransaction.getTransactionAmt();
                 double postTransactionAmount = currentBalance + transactionAmount;
+                System.out.print(postTransactionAmount);
                 int currentTransactionSize = account.getTransactions().size();
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
                 LocalDateTime now = LocalDateTime.now();
                 String transactionDateTime = dtf.format(now);
-                String accountId = account.getId();
+                int accountId = account.getId();
                 
                 if (currentTransactionSize > 0) {
                     String newId = Integer.toString(currentTransactionSize + 1);
@@ -90,7 +93,8 @@ public class TransactionResource {
     @Path("/withdrawal/{IBAN}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createWithdrawal(@HeaderParam("customerId") final String customerId, @PathParam("IBAN") final String IBAN, Transaction newTransaction) {
+    public Response createWithdrawal(@CookieParam("customerId") final Cookie cookie, @PathParam("IBAN") final String IBAN, Transaction newTransaction) {
+        String customerId = cookie.getValue();
         Customer customer = customerServices.getCustomerById(customerId);
         if (newTransaction.getTransactionType().equalsIgnoreCase("withdrawal")) {
             if (customer.getSecurityCred() != null) {
@@ -103,7 +107,7 @@ public class TransactionResource {
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
                 LocalDateTime now = LocalDateTime.now();
                 String transactionDateTime = dtf.format(now);
-                String accountId = account.getId();
+                int accountId = account.getId();
                 
                 if (currentTransactionSize > 0) {
                     String newId = Integer.toString(currentTransactionSize + 1);
@@ -123,5 +127,25 @@ public class TransactionResource {
           }
         }
         return Response.status(Response.Status.BAD_REQUEST).entity("Only withdrawal transaction is allowed").build();
+    }
+    
+    @GET
+    @Path("/{IBAN}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response transactionsByIBAN(@CookieParam("customerId") final Cookie cookie, 
+            @PathParam("IBAN") final String IBAN){
+        String adminId = cookie.getValue();
+        Customer admin = customerServices.getCustomerById(adminId);
+        Account account = service.getAccountByIBAN(IBAN);
+        if(admin.getPrivilages() == true || admin.getId().equals(account.getOwnerId())){
+            if(account != null){
+                //ArrayList<Transaction> transactions = account.getTransactions();
+                //GenericEntity<ArrayList<Transaction>> entity = new GenericEntity<ArrayList<Transaction>>(transactions){};
+                return Response.status(Response.Status.OK).entity(account).build();
+            }
+            return Response.status(Response.Status.NOT_FOUND).entity("Account not found").build();
+        }
+        return Response.status(Response.Status.UNAUTHORIZED).entity("You must be an Admin to view another users account").build();
     }
 }
