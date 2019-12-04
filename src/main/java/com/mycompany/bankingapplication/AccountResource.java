@@ -43,7 +43,8 @@ public class AccountResource {
     @GET
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response getAllAccounts(@HeaderParam("customerId") final String adminId){
+    public Response getAllAccounts(@CookieParam("customerId") final Cookie cookie){
+        String adminId = cookie.getValue();
         Customer admin = customers.getCustomerById(adminId);
         if(admin.getPrivilages()){
             ArrayList<Account> accounts = service.getAllAccounts();
@@ -57,11 +58,13 @@ public class AccountResource {
     @Path("/{IBAN}")
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response AccountByIBAN(@HeaderParam("customerId") final String adminId, 
+    public Response accountByIBAN(@CookieParam("customerId") final Cookie cookie, 
             @PathParam("IBAN") final String IBAN){
+        String adminId = cookie.getValue();
         Customer admin = customers.getCustomerById(adminId);
-        if(admin.getPrivilages() == true){
-            Account account = service.getAccountByIBAN(IBAN);
+        Account account = service.getAccountByIBAN(IBAN);
+        //must be either an admin or the owner of account to view
+        if(admin.getPrivilages() == true || admin.getId() == account.getOwnerId()){
             if(account != null){
                 return Response.status(Response.Status.OK).entity(account).build();
             }
@@ -98,7 +101,8 @@ public class AccountResource {
     @Path("/current/{IBAN}")
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response getSpecificCustomerAccount(@HeaderParam("customerId") final String customerId, @PathParam("IBAN") final String IBAN){
+    public Response getSpecificCustomerAccount(@CookieParam("customerId") final Cookie cookie, @PathParam("IBAN") final String IBAN){
+        String customerId = cookie.getValue();
         Customer customer = customers.getCustomerById(customerId);
         System.out.print(customer.getFirstName());
         if(customer.getSecurityCred() != null){
@@ -119,6 +123,7 @@ public class AccountResource {
     public Response createAccount(@CookieParam("customerId") final String customerId, final Account account){
         Customer customer = customers.getCustomerById(customerId);
         if(customer.getSecurityCred() != null){
+            account.setId(customer.getAccounts().size());
             account.setOwnerId(customer.getId());
             customer.addAccount(account);
             customers.editCustomerDetails(customer);

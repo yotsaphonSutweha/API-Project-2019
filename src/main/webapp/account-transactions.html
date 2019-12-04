@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Transactions</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel='stylesheet' type='text/css' href='style.css'>
+    </head>
+    <body>
+        <div id="accountDetails">
+            <h1 id="accountName">Account Type</h1>
+            <p id="IBAN">IBAN</p>
+            <h3 id="accountBalance">Balance: </h3>
+        </div>
+        <div id="transactionsWrapper">
+            <div class="detailHeader">
+                <h1>Lodge or withdraw</h1>
+            </div>
+            <hr>
+            <input type="text" name="amount" placeholder="amount" id="transOption">
+            <div class="flexWrapper">
+                <button id="submitBtn" onclick=beginRequest('lodge')>Lodgement</button>
+                <button id="submitBtn" onclick=beginRequest('withdraw')>Withdraw</button>
+            </div>
+        </div>
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" ></script>
+        <script>
+            var URI;
+            var method;
+            var amount = 0;
+            var dataPayload;
+            function beginRequest(type){
+                var IBAN = localStorage.getItem("IBAN")
+                if(type === 'loadPage'){
+                    method = 'GET';
+                    URI = "account/" + IBAN;
+                }else if(type === 'lodge'){
+                    method = 'POST';
+                    URI = 'transaction/lodgement/' + IBAN;
+                    amount = $('#transOption').val();
+                    dataPayload ={
+                        'transactionAmt':amount,
+                        'transactionType': 'lodgement'
+                    };
+                }else if(type === 'withdraw'){
+                    method = 'POST';
+                    URI = 'transaction/withdrawal/' + IBAN;
+                    amount = $('#transOption').val();
+                    dataPayload ={
+                        "transactionAmt":amount,
+                        "transactionType":'withdrawal'
+                    };
+                }
+                console.log(amount);
+                request();
+            }
+    
+            function request() {
+                
+                $.ajax({
+                type: method,
+                data: JSON.stringify(dataPayload),
+                dataType: "json",
+                contentType: "application/json",
+                processData: true,
+                url: "http://localhost:8080/api/" + URI,
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function(data) {
+                    try {
+                        console.log(data);
+                        $("#accountName").text(data['accountType'])
+                        $("#bic").text(data['accountType'])
+                        $("#IBAN").text(data['IBAN'])
+                        $("#accountBalance").text("Balance: " + data['balance'])
+                    } catch (e) {
+                        console.log(e);
+                    }
+                },
+                error: function(xhrm, statusText) {
+                    console.log("Error: " + xhrm.status + " " + statusText);
+                }
+                })
+            }
+            beginRequest('loadPage');
+        </script>
+    </body>
+</html>

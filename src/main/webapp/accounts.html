@@ -38,14 +38,14 @@ and open the template in the editor.
                 success: function(data) {
                     try {
                         $.each(data, function(i, item){
-                            var $tr = $('<tr>').append(
+                            var $tr = $('<tr id="' + item.IBAN +'">').append(
                                $('<td>').text(item.accountType),
                                $('<td>').text(item.IBAN),
                                $('<td>').text(item.balance),
                             ).appendTo('#help');
+                            $('#' + item.IBAN).attr('onClick', 'loadAccount("' + item.IBAN + '");')
                             console.log($tr.wrap('<p>').html());
                         });
-                        
                     } catch (e) {
                         console.log(e);
                     }
@@ -54,6 +54,15 @@ and open the template in the editor.
                     console.log("Error: " + xhrm.status + " " + statusText);
                 }
                 });
+            }
+            
+            function loadAccount(IBAN){
+                //this is used so when the on click sends you to the view transactions page the transactions page can retrieve the desired IBAN for request
+                window.localStorage.removeItem('IBAN');
+                console.log(IBAN);
+                window.localStorage.setItem("IBAN", IBAN);
+                console.log(localStorage.getItem("IBAN"));
+                window.location.href = 'account-transactions.html';
             }
         </script>
     </body>

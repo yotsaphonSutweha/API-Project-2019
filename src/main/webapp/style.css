@@ -1,0 +1,64 @@
+
+#accountDetails{
+    color: #636363;
+    margin-left: 15%;
+    margin-top: 40px;
+}
+
+#transactionsWrapper{
+    color: #636363;
+    padding: 10px;
+    margin: auto;
+    border-radius: 10px;
+    width: 25%;
+    min-width: 200px;
+    margin-bottom: 100px;
+    border-top: 1px;
+    border-style: solid;
+    border-color: gray;
+}
+
+#transactions{
+    overflow-y: scroll;
+    width:100%;
+    height: 300px;
+}
+
+.flexWrapper{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.detailHeader{
+    text-align: center;
+}
+
+.accountDetails{
+    height:50px;
+}
+
+#transOption{
+    display: flex;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+::-webkit-scrollbar {
+  width: 3px; 
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}

@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name="Account")
 public class Account {
-    private String id;
+    private int id;
     private String ownerId;
     private double balance;
     private String IBAN;
@@ -25,7 +25,7 @@ public class Account {
         
     }
     
-    public Account(String id, String ownerId, double balance, String IBAN, String accountType) {
+    public Account(int id, String ownerId, double balance, String IBAN, String accountType) {
         this.id = id;
         this.ownerId = ownerId;
         this.balance = balance;
@@ -45,11 +45,11 @@ public class Account {
         this.transactions = transactions;
     }
     
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
