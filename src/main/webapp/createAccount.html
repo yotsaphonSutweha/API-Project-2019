@@ -19,6 +19,7 @@ and open the template in the editor.
         <input type="text" name="IBAN" placeholder="IBAN" id ="IBANId">  
         <input type="text" name="accountType" placeholder="Type of Account" id="accountTypeId">
         <button id="submitBtn" onclick=executeCreateAccount()>Create Account</button>
+        <button id="submitBtn" onclick=logout()>Logout</button>
         <script>
             function executeCreateAccount() {
                 var idText = $("#idTemp").val();
@@ -45,6 +46,30 @@ and open the template in the editor.
                         try {
                             var newdata = data;
                             console.log("A new account is created" + newdata["id"]);
+                            alert("A new account is created");
+                        } catch (e) {
+                            console.log("caught error " + e);
+                        }
+                    },
+                    error:function(xhrm, statusText){
+                        console.debug("Error: " + xhrm.status + " " + statusText);
+                    }
+                });
+            }
+            
+            function logout() {
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/api/customer/logout",
+                    dataType: "json",
+                    contentType: "application/json",
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    crossDomain: true,
+                    success: function(data) {
+                        try {
+                            alert("Log out successfully!");
                         } catch (e) {
                             console.log("caught error " + e);
                         }

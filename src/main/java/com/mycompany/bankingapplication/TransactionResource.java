@@ -129,23 +129,79 @@ public class TransactionResource {
         return Response.status(Response.Status.BAD_REQUEST).entity("Only withdrawal transaction is allowed").build();
     }
     
-    @GET
+    @POST
     @Path("/{IBAN}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response transactionsByIBAN(@CookieParam("customerId") final Cookie cookie, 
-            @PathParam("IBAN") final String IBAN){
-        String adminId = cookie.getValue();
-        Customer admin = customerServices.getCustomerById(adminId);
-        Account account = service.getAccountByIBAN(IBAN);
-        if(admin.getPrivilages() == true || admin.getId().equals(account.getOwnerId())){
-            if(account != null){
-                //ArrayList<Transaction> transactions = account.getTransactions();
-                //GenericEntity<ArrayList<Transaction>> entity = new GenericEntity<ArrayList<Transaction>>(transactions){};
-                return Response.status(Response.Status.OK).entity(account).build();
+    public Response transactionsByIBAN(@CookieParam("customerId") Cookie cookie, @PathParam("IBAN") String currentCustomerIBAN, Transaction newTransaction){
+//        String adminId = cookie.getValue();
+//        Customer admin = customerServices.getCustomerById(adminId);
+//        Account account = service.getAccountByIBAN(IBAN);
+//        if(admin.getPrivilages() == true || admin.getId().equals(account.getOwnerId())){
+//            if(account != null){
+//                //ArrayList<Transaction> transactions = account.getTransactions();
+//                //GenericEntity<ArrayList<Transaction>> entity = new GenericEntity<ArrayList<Transaction>>(transactions){};
+//                return Response.status(Response.Status.OK).entity(account).build();
+//            }
+//            return Response.status(Response.Status.NOT_FOUND).entity("Account not found").build();
+//        }
+        String currentCustomerId = cookie.getValue();
+        Customer currentCustomer = customerServices.getCustomerById(currentCustomerId);
+        Account currentAccount = service.getAccountByIBAN(currentCustomerIBAN);
+        if (currentAccount.getIBAN().equals(newTransaction.getTransferIBAN())) {
+             return Response.status(Response.Status.BAD_REQUEST).entity("The two provided IBANs have the same value").build();
+        } else {
+            if (newTransaction.getTransactionType().equalsIgnoreCase("transfer")){
+                if (currentCustomer.getSecurityCred() != null) {
+                    Account transfering = service.getAccountByIBAN(newTransaction.getTransferIBAN());
+                    if(currentAccount != null){
+                        double transactionAmount = newTransaction.getTransactionAmt();
+                        // Handle the sender's details
+                        double senderCurrentBalance = currentAccount.getBalance();
+                        double postTransactionAmountForSender = senderCurrentBalance - transactionAmount;
+                        int currentTransactionSize = currentAccount.getTransactions().size();
+                        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+                        LocalDateTime now = LocalDateTime.now();
+                        String transactionDateTime = dtf.format(now);
+                        int accountId = currentAccount.getId();
+                        if (currentTransactionSize > 0) {
+                            String newId = Integer.toString(currentTransactionSize + 1);
+                            newTransaction.setTransactionId(newId);
+                        } else if (currentTransactionSize == 0) {
+                            newTransaction.setTransactionId("1");
+                        }
+                        newTransaction.setAccountId(accountId);
+                        newTransaction.setPostTransactionAmt(postTransactionAmountForSender);
+                        newTransaction.setTransferDate(transactionDateTime);
+                        currentAccount.setBalance(postTransactionAmountForSender);
+                        currentAccount.addTransaction(newTransaction);
+                        
+                        // Handle the receiver's details
+                        int transferingAccountSize = transfering.getTransactions().size();
+                        double receiverCurrentBalance = transfering.getBalance();
+                        double postTransactionAmountForReceiver  = receiverCurrentBalance + transactionAmount;
+                        Transaction receiverTransaction = new Transaction();
+                        if (transferingAccountSize > 0) {
+                            String newId = Integer.toString(transferingAccountSize + 1);
+                            receiverTransaction.setTransactionId(newId);
+                        } else if (transferingAccountSize == 0) {
+                            receiverTransaction.setTransactionId("1");
+                        }
+                        receiverTransaction.setAccountId(transfering.getId());
+                        receiverTransaction.setDescription("Received from transfer");
+                        receiverTransaction.setTransactionAmt(transactionAmount);
+                        receiverTransaction.setTransactionType("Transfer");
+                        receiverTransaction.setPostTransactionAmt(postTransactionAmountForReceiver);
+                        receiverTransaction.setTransferDate(transactionDateTime);
+                        transfering.setBalance(postTransactionAmountForReceiver);
+                        transfering.addTransaction(receiverTransaction);
+                        return Response.status(Response.Status.OK).entity(transfering).build();
+                    }
+                    return Response.status(Response.Status.NOT_FOUND).entity("Account Not Found").build();
+                }
+                 return Response.status(Response.Status.NOT_FOUND).entity("Cannot find your user account. Please register with the system.").build();
             }
-            return Response.status(Response.Status.NOT_FOUND).entity("Account not found").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity("Only transfer transaction is allowed").build();
         }
-        return Response.status(Response.Status.UNAUTHORIZED).entity("You must be an Admin to view another users account").build();
     }
 }

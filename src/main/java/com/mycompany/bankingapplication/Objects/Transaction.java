@@ -20,7 +20,8 @@ public class Transaction {
     private String description;
     private double postTransactionAmt;
     private double transactionAmt;
-   
+    private String senderName;
+    private String transferIBAN;
     
     public Transaction() {
         
@@ -35,9 +36,24 @@ public class Transaction {
         this.postTransactionAmt = postTransactionAmt;
         this.transactionAmt = transactionAmt;
     }
-    
-          
 
+    public String getTransferIBAN() {
+        return transferIBAN;
+    }
+
+    public void setTransferIBAN(String transferIBAN) {
+        this.transferIBAN = transferIBAN;
+    }
+    
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+  
     public double getPostTransactionAmt() {
         return postTransactionAmt;
     }

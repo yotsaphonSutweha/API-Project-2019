@@ -4,8 +4,8 @@ com/mycompany/bankingapplication/Objects/Account.class
 com/mycompany/bankingapplication/AccountResource$2.class
 com/mycompany/bankingapplication/Objects/Transaction.class
 com/mycompany/bankingapplication/Helpers/CorsFilter.class
-com/mycompany/bankingapplication/TransactionResource.class
 com/mycompany/bankingapplication/CustomerResource.class
+com/mycompany/bankingapplication/TransactionResource.class
 com/mycompany/bankingapplication/Services/TransactionService.class
 com/mycompany/bankingapplication/AccountResource.class
 com/mycompany/bankingapplication/Helpers/DebugMapper.class

@@ -123,7 +123,12 @@ public class AccountResource {
     public Response createAccount(@CookieParam("customerId") final String customerId, final Account account){
         Customer customer = customers.getCustomerById(customerId);
         if(customer.getSecurityCred() != null){
-            account.setId(customer.getAccounts().size());
+            if (customer.getAccounts().size() == 0) {
+                account.setId(1);
+            } else if (customer.getAccounts().size() > 0) {
+                int newId = customer.getAccounts().size() + 1;
+                account.setId(newId);
+            }
             account.setOwnerId(customer.getId());
             customer.addAccount(account);
             customers.editCustomerDetails(customer);
