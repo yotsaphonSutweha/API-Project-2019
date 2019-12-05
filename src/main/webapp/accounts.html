@@ -14,13 +14,18 @@ and open the template in the editor.
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" ></script>
         <script src="Js/AjaxRequest.js"></script> 
-        
-        <div class="accountList" style="width:50%">
-            <table id="help" style="width:100%"></table>
+        <link rel='stylesheet' type='text/css' href='style.css'>
+        <h1 class="detailHeader">Accounts</h1>
+        <div class="transactionsWrapper">
+            <div class="accountList" style="width:100%">
+                <table id="help" style="width:100%">
+                </table>
+                <div class="transactionList">
+                </div>
+            </div>
+            <button id="submitBtn" onclick=logout() class="registerFieldsWrapper">Logout</button>
         </div>
-        <button onclick=clickX()>click</button>
         <script>
-            function clickX() {
                 $.ajax({
                 type: "GET",
                 processData: true,
@@ -39,12 +44,24 @@ and open the template in the editor.
                     try {
                         $.each(data, function(i, item){
                             var $tr = $('<tr id="' + item.IBAN +'">').append(
-                               $('<td>').text(item.accountType),
-                               $('<td>').text(item.IBAN),
-                               $('<td>').text(item.balance),
+                               $('<td>').text("Account type: " + item.accountType + " | "),
+                               $('<td>').text("IBAN: " + item.IBAN + " | "),
+                               $('<td>').text("Current: " + item.balance + " | "),
                             ).appendTo('#help');
                             $('#' + item.IBAN).attr('onClick', 'loadAccount("' + item.IBAN + '");')
                             console.log($tr.wrap('<p>').html());
+                            for(var i = 0; i < item.transactions.length; i++) {
+                                console.log(item.transactions[i].postTransactionAmt);
+                                $('<ul>').append(
+                                    $('<li>').text("Transaction Type: " + item.transactions[i].transactionType), 
+                                    $('<ul>').append( 
+                                        $('<li>').text("Transaction description: " + item.transactions[i].description),  
+                                        $('<li>').text("Transaction Amount: €" + item.transactions[i].transactionAmt),
+                                        $('<li>').text("Post Transaction Amount: €" + item.transactions[i].postTransactionAmt),
+                                        $('<li>').text("Transfer Date: " + item.transactions[i].transferDate),
+                                    )
+                                ).appendTo('.transactionList') ;
+                            }
                         });
                     } catch (e) {
                         console.log(e);
@@ -54,7 +71,7 @@ and open the template in the editor.
                     console.log("Error: " + xhrm.status + " " + statusText);
                 }
                 });
-            }
+            
             
             function loadAccount(IBAN){
                 //this is used so when the on click sends you to the view transactions page the transactions page can retrieve the desired IBAN for request
@@ -63,6 +80,29 @@ and open the template in the editor.
                 window.localStorage.setItem("IBAN", IBAN);
                 console.log(localStorage.getItem("IBAN"));
                 window.location.href = 'account-transactions.html';
+            }
+            
+             function logout() {
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/api/customer/logout",
+                    dataType: "json",
+                    contentType: "application/json",
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    crossDomain: true,
+                    success: function(data) {
+                        try {
+                            alert("Log out successfully!");
+                        } catch (e) {
+                            console.log("caught error " + e);
+                        }
+                    },
+                    error:function(xhrm, statusText){
+                        console.debug("Error: " + xhrm.status + " " + statusText);
+                    }
+                });
             }
         </script>
     </body>
