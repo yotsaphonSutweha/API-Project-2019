@@ -13,19 +13,24 @@ and open the template in the editor.
     </head>
     <body>
         <div id="accountDetails">
-            <h1 id="accountName">Account Type</h1>
-            <p id="IBAN">IBAN</p>
+            <h1 id="accountName">Account Type: </h1>
+            <p id="IBAN">IBAN: </p>
             <h3 id="accountBalance">Balance: </h3>
         </div>
-        <div id="transactionsWrapper">
+        <div class="transactionsWrapper">
             <div class="detailHeader">
-                <h1>Lodge or withdraw</h1>
+                <h1>Lodge/withdraw/Transfer</h1>
             </div>
             <hr>
-            <input type="text" name="amount" placeholder="amount" id="transOption">
+            <div class="flexWrapper">
+                <input type="text" name="amount" placeholder="amount" id="transOption">
+                <input type="text" name="description" placeholder="description" id="transferDescription">
+                <input type="text" name="transferIBAN" placeholder="Transfer IBAN" id="transferIBAN">
+            </div>
             <div class="flexWrapper">
                 <button id="submitBtn" onclick=beginRequest('lodge')>Lodgement</button>
                 <button id="submitBtn" onclick=beginRequest('withdraw')>Withdraw</button>
+                <button id="submitBtn" onclick=beginRequest('transfer')>Transfer</button>
             </div>
         </div>
         
@@ -45,17 +50,33 @@ and open the template in the editor.
                     method = 'POST';
                     URI = 'transaction/lodgement/' + IBAN;
                     amount = $('#transOption').val();
+                    description = $('#transferDescription').val();
                     dataPayload ={
                         'transactionAmt':amount,
-                        'transactionType': 'lodgement'
+                        'transactionType': 'lodgement',
+                        'description': description
                     };
                 }else if(type === 'withdraw'){
                     method = 'POST';
                     URI = 'transaction/withdrawal/' + IBAN;
                     amount = $('#transOption').val();
+                    description = $('#transferDescription').val();
                     dataPayload ={
-                        "transactionAmt":amount,
-                        "transactionType":'withdrawal'
+                        'transactionAmt':amount,
+                        'transactionType':'withdrawal',
+                        'description': description
+                    };
+                } else if (type === 'transfer') {
+                    method = 'POST';
+                    URI = 'transaction/' + IBAN;
+                    amount = $('#transOption').val();
+                    transferIBAN =  $('#transferIBAN').val();
+                    description = $('#transferDescription').val();
+                    dataPayload ={
+                        'transactionAmt':amount,
+                        'transactionType':'transfer',
+                        'transferIBAN': transferIBAN,
+                        'description': description
                     };
                 }
                 console.log(amount);
@@ -78,10 +99,10 @@ and open the template in the editor.
                 success: function(data) {
                     try {
                         console.log(data);
-                        $("#accountName").text(data['accountType'])
-                        $("#bic").text(data['accountType'])
-                        $("#IBAN").text(data['IBAN'])
-                        $("#accountBalance").text("Balance: " + data['balance'])
+                        $("#accountName").text("Account type: " + data['accountType'])
+                        $("#bic").text("Account type: " + data['accountType'])
+                        $("#IBAN").text("IBAN: " + data['IBAN'])
+                        $("#accountBalance").text("Balance:"+ data['balance'])
                     } catch (e) {
                         console.log(e);
                     }
