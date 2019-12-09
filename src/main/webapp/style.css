@@ -5,7 +5,7 @@
     margin-top: 40px;
 }
 
-#transactionsWrapper{
+.transactionsWrapper{
     color: #636363;
     padding: 10px;
     margin: auto;
@@ -29,6 +29,13 @@
     justify-content: space-evenly;
 }
 
+.registerFieldsWrapper {
+  width:100%;
+  padding: 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+}
+
 .detailHeader{
     text-align: center;
 }
@@ -37,7 +44,11 @@
     height:50px;
 }
 
-#transOption{
+.transInputs {
+    padding-left: 50px;
+}
+
+.transOption{
     display: flex;
     margin: auto;
     margin-top: 15px;

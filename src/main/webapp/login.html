@@ -13,18 +13,15 @@ and open the template in the editor.
     <body>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" ></script>
+        <link rel='stylesheet' type='text/css' href='style.css'>
         <script src="Js/AjaxRequest.js"></script> 
-<!--        <button onclick="executeRequest(null)"></button>
-        <script>
-            //this shouldn't really be here but for testing porposes its fine
-            var request = [];
-            request["method"] = "GET";
-            request["uri"] = "account/current";
-            initRequest(request);
-        </script>-->
-        <input type="text" name="email" placeholder="Email" id="emailId">
-        <input type="text" name="password" placeholder="Password" id="passwordId">
-        <button id="submitBtn" onclick=executeLogin()>Login</button>
+        <h1 class="detailHeader">Login page</h1>
+        <div class="transactionsWrapper">
+            <input type="text" name="email" placeholder="Email" id="emailId" class="registerFieldsWrapper">
+            <input type="text" name="password" placeholder="Password" id="passwordId" class="registerFieldsWrapper">
+            <button id="submitBtn" onclick=executeLogin() class="registerFieldsWrapper">Login</button>
+            <a href="localhost:8080/register.html">Register</a>
+        </div>
         <script>
             function executeLogin() {
                 var emailText = $("#emailId").val();

@@ -14,12 +14,15 @@ and open the template in the editor.
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" ></script>
         <script src="Js/AjaxRequest.js"></script> 
-        <input type="text" name="id" placeholder="Id" id="idTemp">
-        <input type="text" name="balance" placeholder="Balance" id="balanceId">
-        <input type="text" name="IBAN" placeholder="IBAN" id ="IBANId">  
-        <input type="text" name="accountType" placeholder="Type of Account" id="accountTypeId">
-        <button id="submitBtn" onclick=executeCreateAccount()>Create Account</button>
-        <button id="submitBtn" onclick=logout()>Logout</button>
+        <link rel='stylesheet' type='text/css' href='style.css'>
+        <h1 class="detailHeader">Create Account</h1>
+        <div class="transactionsWrapper">
+            <input type="text" name="balance" placeholder="Balance" id="balanceId" class="registerFieldsWrapper">
+            <input type="text" name="IBAN" placeholder="IBAN" id ="IBANId" class="registerFieldsWrapper">  
+            <input type="text" name="accountType" placeholder="Type of Account" id="accountTypeId" class="registerFieldsWrapper">
+            <button id="submitBtn" onclick=executeCreateAccount() class="registerFieldsWrapper">Create Account</button>
+            <button id="submitBtn" onclick=logout() class="registerFieldsWrapper">Logout</button>
+        </div>
         <script>
             function executeCreateAccount() {
                 var idText = $("#idTemp").val();

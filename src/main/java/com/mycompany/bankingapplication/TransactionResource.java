@@ -195,7 +195,7 @@ public class TransactionResource {
                         receiverTransaction.setTransferDate(transactionDateTime);
                         transfering.setBalance(postTransactionAmountForReceiver);
                         transfering.addTransaction(receiverTransaction);
-                        return Response.status(Response.Status.OK).entity(transfering).build();
+                        return Response.status(Response.Status.OK).entity(currentAccount).build();
                     }
                     return Response.status(Response.Status.NOT_FOUND).entity("Account Not Found").build();
                 }

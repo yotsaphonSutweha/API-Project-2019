@@ -6,47 +6,26 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Registration</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div>TODO write content</div>
-<!--        <button onclick="executeRequest(null)"></button>-->
+        <h1 class="detailHeader">Registration page</h1>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" ></script>
-<!--        <script src="Js/AjaxRequest.js"></script> -->
-<!--        <script>
-            //this shouldn't really be here but for testing porposes its fine
-            var request = [];
-            // request["method"] = "POST";
-            request["uri"] = "customer/register";
-            initRequest(request);
-        </script>-->
-        <input type="text" name="email" placeholder="Email" id="emailId">
-        <input type="text" name="password" placeholder="Password" id="passwordId">
-        <input type="text" name="securityCred" placeholder="Security credential" id ="securityCredId">  
-        <input type="text" name="firstName" placeholder="First Name" id="firstNameId">
-        <input type="text" name="secondName" placeholder="Second Name" id="secondNameId">
-        <input type="text" name="address" placeholder="Full Address" id="addressId">
-<!--        <script src="Js/AjaxRequest.js"></script> 
-        <script>
-            var emailText = $("#emailId").val();
-            var passwordText = $("#passwordId").val();
-            var securityCredText = $("#securityCredId").val();
-            var firstNameText = $("#firstNameId").val();
-            var secondNameText = $("#secondNameId").val();
-            var addressText = $("#addressId").val();
-            dataPayload = {
-                "email": emailText,
-                "password": passwordText,
-                "securityCred":securityCredText,
-                "firstName": firstNameText,
-                "secondName": secondNameText,
-                "address": addressText
-            }
-        </script>-->
-        <button id="submitBtn" onclick=executeRegister()>Register</button>
+        <link rel='stylesheet' type='text/css' href='style.css'>
+        <div class="transactionsWrapper">
+            <div>
+                <input type="text" name="email" placeholder="Email" id="emailId" class="registerFieldsWrapper">
+                <input type="text" name="password" placeholder="Password" id="passwordId"  class="registerFieldsWrapper">
+                <input type="text" name="securityCred" placeholder="Security credential" id ="securityCredId"  class="registerFieldsWrapper">  
+                <input type="text" name="firstName" placeholder="First Name" id="firstNameId"  class="registerFieldsWrapper">
+                <input type="text" name="secondName" placeholder="Second Name" id="secondNameId"  class="registerFieldsWrapper">
+                <input type="text" name="address" placeholder="Full Address" id="addressId"  class="registerFieldsWrapper">
+                <button id="submitBtn" onclick=executeRegister() class="registerFieldsWrapper">Register</button>
+            </div>
+        </div>
         <script>
             function executeRegister() {
                 var emailText = $("#emailId").val();
