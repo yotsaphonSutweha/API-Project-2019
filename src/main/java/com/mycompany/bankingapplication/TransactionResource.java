@@ -52,6 +52,8 @@ public class TransactionResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createLodgement(@CookieParam("customerId") final Cookie cookie, @PathParam("IBAN") final String IBAN, Transaction newTransaction) {
+         if(cookie == null)
+                return Response.status(Response.Status.NOT_FOUND).build();
         String customerId = cookie.getValue();
         Customer customer = customerServices.getCustomerById(customerId);
         if (newTransaction.getTransactionType().equalsIgnoreCase("lodgement")) {
@@ -94,6 +96,8 @@ public class TransactionResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createWithdrawal(@CookieParam("customerId") final Cookie cookie, @PathParam("IBAN") final String IBAN, Transaction newTransaction) {
+         if(cookie == null)
+                return Response.status(Response.Status.NOT_FOUND).build();
         String customerId = cookie.getValue();
         Customer customer = customerServices.getCustomerById(customerId);
         if (newTransaction.getTransactionType().equalsIgnoreCase("withdrawal")) {
@@ -134,17 +138,8 @@ public class TransactionResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response transactionsByIBAN(@CookieParam("customerId") Cookie cookie, @PathParam("IBAN") String currentCustomerIBAN, Transaction newTransaction){
-//        String adminId = cookie.getValue();
-//        Customer admin = customerServices.getCustomerById(adminId);
-//        Account account = service.getAccountByIBAN(IBAN);
-//        if(admin.getPrivilages() == true || admin.getId().equals(account.getOwnerId())){
-//            if(account != null){
-//                //ArrayList<Transaction> transactions = account.getTransactions();
-//                //GenericEntity<ArrayList<Transaction>> entity = new GenericEntity<ArrayList<Transaction>>(transactions){};
-//                return Response.status(Response.Status.OK).entity(account).build();
-//            }
-//            return Response.status(Response.Status.NOT_FOUND).entity("Account not found").build();
-//        }
+         if(cookie == null)
+                return Response.status(Response.Status.NOT_FOUND).build();
         String currentCustomerId = cookie.getValue();
         Customer currentCustomer = customerServices.getCustomerById(currentCustomerId);
         Account currentAccount = service.getAccountByIBAN(currentCustomerIBAN);

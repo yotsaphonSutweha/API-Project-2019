@@ -40,11 +40,12 @@ and open the template in the editor.
                     contentType: "application/json",
                     crossDomain: true,
                     success: function(data) {
+                        window.location.href = 'createAccount.html';
                         try {
                             var newdata = data;
                             console.log("The user is logged in " + newdata);
                             alert("Log in successfully!");
-                            window.location.href = 'createAccount.html';
+                            
                         } catch (e) {
                             console.log("caught error " + e);
                         }
