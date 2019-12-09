@@ -44,6 +44,8 @@ public class AccountResource {
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response getAllAccounts(@CookieParam("customerId") final Cookie cookie){
+         if(cookie == null)
+                return Response.status(Response.Status.NOT_FOUND).build();
         String adminId = cookie.getValue();
         Customer admin = customers.getCustomerById(adminId);
         if(admin.getPrivilages()){
@@ -60,6 +62,8 @@ public class AccountResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response accountByIBAN(@CookieParam("customerId") final Cookie cookie, 
             @PathParam("IBAN") final String IBAN){
+        if(cookie == null)
+                return Response.status(Response.Status.NOT_FOUND).build();
         String adminId = cookie.getValue();
         Customer admin = customers.getCustomerById(adminId);
         Account account = service.getAccountByIBAN(IBAN);
@@ -80,18 +84,18 @@ public class AccountResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response customerAccounts(@CookieParam("customerId") Cookie cookie){
         try{
+            if(cookie == null)
+                return Response.status(Response.Status.NOT_FOUND).build();
             String customerId = cookie.getValue();
             ArrayList<Account> accounts = service.getAllCustomerAccounts(customerId);
-            System.out.println("CUSTOMER ID IS: " + customerId);
-            System.out.println(accounts.get(0).getIBAN());
             if(!accounts.isEmpty()){
                 GenericEntity<ArrayList<Account>> entity = new GenericEntity<ArrayList<Account>>(accounts){};
                 return Response.status(Response.Status.OK).entity(entity).build();
             }
             return Response.status(Response.Status.NO_CONTENT).build();
-        }catch(Exception anyfuckingException){
-            anyfuckingException.printStackTrace();
-            System.out.println(anyfuckingException.getMessage());
+        }catch(Exception e){
+            e.printStackTrace();
+            System.out.println(e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -102,6 +106,8 @@ public class AccountResource {
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response getSpecificCustomerAccount(@CookieParam("customerId") final Cookie cookie, @PathParam("IBAN") final String IBAN){
+         if(cookie == null)
+                return Response.status(Response.Status.NOT_FOUND).build();
         String customerId = cookie.getValue();
         Customer customer = customers.getCustomerById(customerId);
         System.out.print(customer.getFirstName());
@@ -121,6 +127,8 @@ public class AccountResource {
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createAccount(@CookieParam("customerId") final String customerId, final Account account){
+         if(customerId == null)
+                return Response.status(Response.Status.NOT_FOUND).build();
         Customer customer = customers.getCustomerById(customerId);
         if(customer.getSecurityCred() != null){
             if (customer.getAccounts().size() == 0) {
@@ -142,6 +150,8 @@ public class AccountResource {
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateAccount(@CookieParam("customerId") final String customerId, final Account newAccount){
+         if(customerId == null)
+                return Response.status(Response.Status.NOT_FOUND).build();
         Customer customer = customers.getCustomerById(customerId);
         if(customer.getSecurityCred() != null){
             Account updatedAccount = service.updateAccount(customer, newAccount);
@@ -158,6 +168,8 @@ public class AccountResource {
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response deleteAccount(@CookieParam("customerId") final String customerId, final Account account){
+         if(customerId == null)
+                return Response.status(Response.Status.NOT_FOUND).build();
         Customer customer = customers.getCustomerById(customerId);
         if(customer.getSecurityCred() != null){
             Account deletedAccount = service.deleteAccount(customer, account.getIBAN());

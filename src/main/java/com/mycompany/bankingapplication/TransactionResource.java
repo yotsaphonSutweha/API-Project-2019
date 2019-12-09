@@ -52,6 +52,8 @@ public class TransactionResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createLodgement(@CookieParam("customerId") final Cookie cookie, @PathParam("IBAN") final String IBAN, Transaction newTransaction) {
+         if(cookie == null)
+                return Response.status(Response.Status.NOT_FOUND).build();
         String customerId = cookie.getValue();
         Customer customer = customerServices.getCustomerById(customerId);
         if (newTransaction.getTransactionType().equalsIgnoreCase("lodgement")) {
@@ -94,6 +96,8 @@ public class TransactionResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createWithdrawal(@CookieParam("customerId") final Cookie cookie, @PathParam("IBAN") final String IBAN, Transaction newTransaction) {
+         if(cookie == null)
+                return Response.status(Response.Status.NOT_FOUND).build();
         String customerId = cookie.getValue();
         Customer customer = customerServices.getCustomerById(customerId);
         if (newTransaction.getTransactionType().equalsIgnoreCase("withdrawal")) {
@@ -135,6 +139,8 @@ public class TransactionResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response transactionsByIBAN(@CookieParam("customerId") Cookie cookie, @PathParam("IBAN") String currentCustomerIBAN, Transaction newTransaction){
+         if(cookie == null)
+                return Response.status(Response.Status.NOT_FOUND).build();
         String currentCustomerId = cookie.getValue();
         Customer currentCustomer = customerServices.getCustomerById(currentCustomerId);
         Account currentAccount = service.getAccountByIBAN(currentCustomerIBAN);
