@@ -74,7 +74,7 @@
   background: #555; 
 }
 
-ul {
+.navBar {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -82,11 +82,11 @@ ul {
   background-color: #333;
 }
 
-li {
+.navBarElement {
   float: left;
 }
 
-li a {
+.navBarElement a {
   display: block;
   color: white;
   text-align: center;
@@ -95,6 +95,6 @@ li a {
 }
 
 /* Change the link color to #111 (black) on hover */
-li a:hover {
+.navBarElement a:hover {
   background-color: #111;
 }

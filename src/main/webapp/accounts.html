@@ -9,19 +9,43 @@ and open the template in the editor.
         <title>Accounts</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            .navBar {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #333;
+            }
+            .navBarElement {
+                float: left;
+            }
+            .navBarElement a {
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+            .navBarElement a:hover {
+                background-color: #111;
+            }       
+        </style>
     </head>
     <body>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" ></script>
         <script src="Js/AjaxRequest.js"></script> 
         <link rel='stylesheet' type='text/css' href='style.css'>
+        <ul class="navBar">
+            <li class="navBarElement"><a href="register.html">Register</a></li>
+            <li class="navBarElement"><a href="accounts.html">View accounts</a></li>
+        </ul>
         <h1 class="detailHeader">Accounts</h1>
         <div class="transactionsWrapper">
             <div class="accountList" style="width:100%">
                 <table id="help" style="width:100%">
                 </table>
-                <div class="transactionList">
-                </div>
             </div>
             <button id="submitBtn" onclick=logout() class="registerFieldsWrapper">Logout</button>
         </div>
@@ -44,14 +68,13 @@ and open the template in the editor.
                     try {
                         $.each(data, function(i, item){
                             var $tr = $('<tr id="' + item.IBAN +'">').append(
-                               $('<td>').text("Account type: " + item.accountType + " | "),
-                               $('<td>').text("IBAN: " + item.IBAN + " | "),
-                               $('<td>').text("Current: " + item.balance + " | "),
+                               $('<td>').text("Account type: " + item.accountType + ""),
+                               $('<td>').text("IBAN: " + item.IBAN + ""),
+                               $('<td>').text("Current: " + item.balance + ""),
                             ).appendTo('#help');
                             $('#' + item.IBAN).attr('onClick', 'loadAccount("' + item.IBAN + '");')
                             console.log($tr.wrap('<p>').html());
                             for(var i = 0; i < item.transactions.length; i++) {
-                                console.log(item.transactions[i].postTransactionAmt);
                                 $('<ul>').append(
                                     $('<li>').text("Transaction Type: " + item.transactions[i].transactionType), 
                                     $('<ul>').append( 
@@ -60,7 +83,7 @@ and open the template in the editor.
                                         $('<li>').text("Post Transaction Amount: €" + item.transactions[i].postTransactionAmt),
                                         $('<li>').text("Transfer Date: " + item.transactions[i].transferDate),
                                     )
-                                ).appendTo('.transactionList') ;
+                                ).appendTo('#help') ;
                             }
                         });
                     } catch (e) {

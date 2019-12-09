@@ -54,10 +54,15 @@ public class CustomerResource {
         String email = customer.getEmail();
         String password = customer.getPassword();
         Customer loginCustomer = customers.getCustomerByEmail(email);
-        if((!loginCustomer.equals(null)) && (loginCustomer.getPassword().equals(password))){
+        try {
+             if((!loginCustomer.equals(null)) && (loginCustomer.getPassword().equals(password)) && (!loginCustomer.getFirstName().isEmpty() && !loginCustomer.getSecondName().isEmpty() && !loginCustomer.getEmail().isEmpty()
+                    && !loginCustomer.getPassword().isEmpty() && !loginCustomer.getAddress().isEmpty() && !loginCustomer.getSecurityCred().isEmpty())){
             String loginId = loginCustomer.getId();
             NewCookie cookie = new NewCookie("customerId", loginId, "/", "", "comment", 30000, false);
             return Response.status(Response.Status.OK).cookie(cookie).build();
+            }
+        } catch(Exception e) {
+             System.out.println(e);
         }
         return Response.status(Response.Status.NOT_FOUND).entity("Customer Does Not Exist").build();
     }
