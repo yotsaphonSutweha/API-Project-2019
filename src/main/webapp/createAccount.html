@@ -50,6 +50,7 @@ and open the template in the editor.
                             var newdata = data;
                             console.log("A new account is created" + newdata["id"]);
                             alert("A new account is created");
+                             window.location.href = 'accounts.html';
                         } catch (e) {
                             console.log("caught error " + e);
                         }

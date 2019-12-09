@@ -10,7 +10,7 @@
     padding: 10px;
     margin: auto;
     border-radius: 10px;
-    width: 25%;
+    width: 50%;
     min-width: 200px;
     margin-bottom: 100px;
     border-top: 1px;
@@ -25,6 +25,7 @@
 }
 
 .flexWrapper{
+    padding-top: 15px;
     display: flex;
     justify-content: space-evenly;
 }

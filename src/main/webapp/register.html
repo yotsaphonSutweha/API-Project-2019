@@ -55,6 +55,7 @@ and open the template in the editor.
                             var newdata = data;
                             console.log("New user is created with the id of " + newdata["id"]);
                             alert("Register successfully!");
+                            window.location.href = 'login.html';
                         } catch (e) {
                             console.log("caught error " + e);
                         }
