@@ -8,7 +8,7 @@ package com.mycompany.bankingapplication;
 
 import com.mycompany.bankingapplication.Objects.Account;
 import com.mycompany.bankingapplication.Objects.Customer;
-import com.mycompany.bankingapplication.Objects.CustomersDataService;
+import com.mycompany.bankingapplication.Services.CustomersService;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -36,7 +36,7 @@ import javax.ws.rs.core.Response;
 @Path("/test")
 public class Test {
 
-    CustomersDataService custOp = CustomersDataService.getInstance();
+    CustomersService custOp = CustomersService.getInstance();
     
     @GET
     @Produces("application/json")

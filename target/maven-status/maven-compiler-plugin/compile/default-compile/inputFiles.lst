@@ -6,7 +6,7 @@
 /Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Objects/Account.java
 /Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Services/AccountService.java
 /Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Services/TransactionService.java
-/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Objects/CustomersDataService.java
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Services/CustomersService.java
 /Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/CustomerResource.java
 /Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Helpers/CorsFilter.java
 /Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Objects/Customer.java

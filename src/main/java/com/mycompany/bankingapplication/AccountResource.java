@@ -8,7 +8,7 @@ package com.mycompany.bankingapplication;
 import com.mycompany.bankingapplication.Helpers.DebugMapper;
 import com.mycompany.bankingapplication.Objects.Account;
 import com.mycompany.bankingapplication.Objects.Customer;
-import com.mycompany.bankingapplication.Objects.CustomersDataService;
+import com.mycompany.bankingapplication.Services.CustomersService;
 import com.mycompany.bankingapplication.Services.AccountService;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 public class AccountResource {
     
     AccountService service = new AccountService();
-    CustomersDataService customers = CustomersDataService.getInstance();
+    CustomersService customers = CustomersService.getInstance();
     ResourceConfig config = new ResourceConfig()
         .register(DebugMapper.class);
     

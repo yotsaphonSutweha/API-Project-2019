@@ -19,13 +19,13 @@ and open the template in the editor.
         </div>
         <div class="transactionsWrapper">
             <div class="detailHeader">
-                <h1>Lodge/withdraw/Transfer</h1>
+                <h1>Transactions</h1>
             </div>
             <hr>
-            <div class="flexWrapper">
-                <input type="text" name="amount" placeholder="amount" id="transOption">
-                <input type="text" name="description" placeholder="description" id="transferDescription">
-                <input type="text" name="transferIBAN" placeholder="Transfer IBAN" id="transferIBAN">
+            <div class="x">
+                <input type="text" name="amount" placeholder="amount" id="transOption" class="transactionInputFields">
+                <input type="text" name="description" placeholder="description" id="transferDescription" class="transactionInputFields">
+                <input type="text" name="transferIBAN" placeholder="Transfer IBAN" id="transferIBAN" class="transactionInputFields">
             </div>
             <div class="flexWrapper">
                 <button id="submitBtn" onclick=beginRequest('lodge')>Lodgement</button>

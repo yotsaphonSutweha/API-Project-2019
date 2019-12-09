@@ -7,7 +7,6 @@ package com.mycompany.bankingapplication.Services;
 
 import com.mycompany.bankingapplication.Objects.Account;
 import com.mycompany.bankingapplication.Objects.Customer;
-import com.mycompany.bankingapplication.Objects.CustomersDataService;
 import java.util.ArrayList;
 
 
@@ -16,7 +15,7 @@ import java.util.ArrayList;
  * @author hassan
  */
 public class AccountService {
-    CustomersDataService customers = CustomersDataService.getInstance();
+    CustomersService customers = CustomersService.getInstance();
     
     public ArrayList<Account> getAllAccounts(){
         ArrayList<Account> accounts = new ArrayList();

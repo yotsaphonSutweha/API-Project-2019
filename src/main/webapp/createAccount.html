@@ -9,12 +9,17 @@ and open the template in the editor.
         <title>Create account</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" ></script>
         <script src="Js/AjaxRequest.js"></script> 
         <link rel='stylesheet' type='text/css' href='style.css'>
+    </head>
+    <body>
+        <ul>
+            <li><a href="register.html">Home</a></li>
+            <li><a href="accounts.html">News</a></li>
+            <li><a href="login.asp">About</a></li>
+        </ul>
         <h1 class="detailHeader">Create Account</h1>
         <div class="transactionsWrapper">
             <input type="text" name="balance" placeholder="Balance" id="balanceId" class="registerFieldsWrapper">
@@ -23,6 +28,7 @@ and open the template in the editor.
             <button id="submitBtn" onclick=executeCreateAccount() class="registerFieldsWrapper">Create Account</button>
             <button id="submitBtn" onclick=logout() class="registerFieldsWrapper">Logout</button>
         </div>
+        
         <script>
             function executeCreateAccount() {
                 var idText = $("#idTemp").val();

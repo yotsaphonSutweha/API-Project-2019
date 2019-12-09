@@ -6,7 +6,7 @@
 package com.mycompany.bankingapplication;
 import com.mycompany.bankingapplication.Objects.Account;
 import com.mycompany.bankingapplication.Objects.Customer;
-import com.mycompany.bankingapplication.Objects.CustomersDataService;
+import com.mycompany.bankingapplication.Services.CustomersService;
 import com.mycompany.bankingapplication.Objects.Transaction;
 import com.mycompany.bankingapplication.Services.AccountService;
 import com.mycompany.bankingapplication.Services.TransactionService;
@@ -43,7 +43,7 @@ import javax.ws.rs.core.GenericEntity;
 @Path("/transaction")
 public class TransactionResource {
     // TransactionService transactionServices = new TransactionService();
-    CustomersDataService customerServices = CustomersDataService.getInstance();
+    CustomersService customerServices = CustomersService.getInstance();
     AccountService service = new AccountService();
     
     // For specific customer to make lodgement based on IBAN
@@ -129,22 +129,12 @@ public class TransactionResource {
         return Response.status(Response.Status.BAD_REQUEST).entity("Only withdrawal transaction is allowed").build();
     }
     
+    
     @POST
     @Path("/{IBAN}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response transactionsByIBAN(@CookieParam("customerId") Cookie cookie, @PathParam("IBAN") String currentCustomerIBAN, Transaction newTransaction){
-//        String adminId = cookie.getValue();
-//        Customer admin = customerServices.getCustomerById(adminId);
-//        Account account = service.getAccountByIBAN(IBAN);
-//        if(admin.getPrivilages() == true || admin.getId().equals(account.getOwnerId())){
-//            if(account != null){
-//                //ArrayList<Transaction> transactions = account.getTransactions();
-//                //GenericEntity<ArrayList<Transaction>> entity = new GenericEntity<ArrayList<Transaction>>(transactions){};
-//                return Response.status(Response.Status.OK).entity(account).build();
-//            }
-//            return Response.status(Response.Status.NOT_FOUND).entity("Account not found").build();
-//        }
         String currentCustomerId = cookie.getValue();
         Customer currentCustomer = customerServices.getCustomerById(currentCustomerId);
         Account currentAccount = service.getAccountByIBAN(currentCustomerIBAN);
