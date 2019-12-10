@@ -24,12 +24,4 @@ public class TransactionService {
    public ArrayList<Transaction> getTransactions(){
        return transactions;
    } 
-   
-   public void lodgement(Transaction transaction, Account account){
-       // For refactoring
-   }
-   
-   public void withdraw(Transaction transaction, Account account){
-       // For refactoring
-   }
 }

@@ -6,7 +6,7 @@
 package com.mycompany.bankingapplication;
 import com.mycompany.bankingapplication.Objects.Account;
 import com.mycompany.bankingapplication.Objects.Customer;
-import com.mycompany.bankingapplication.Objects.CustomersDataService;
+import com.mycompany.bankingapplication.Services.CustomersService;
 import com.mycompany.bankingapplication.Objects.Transaction;
 import com.mycompany.bankingapplication.Services.AccountService;
 import com.mycompany.bankingapplication.Services.TransactionService;
@@ -43,7 +43,7 @@ import javax.ws.rs.core.GenericEntity;
 @Path("/transaction")
 public class TransactionResource {
     // TransactionService transactionServices = new TransactionService();
-    CustomersDataService customerServices = CustomersDataService.getInstance();
+    CustomersService customerServices = CustomersService.getInstance();
     AccountService service = new AccountService();
     
     // For specific customer to make lodgement based on IBAN
@@ -132,6 +132,7 @@ public class TransactionResource {
         }
         return Response.status(Response.Status.BAD_REQUEST).entity("Only withdrawal transaction is allowed").build();
     }
+    
     
     @POST
     @Path("/{IBAN}")

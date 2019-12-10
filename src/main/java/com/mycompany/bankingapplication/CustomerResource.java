@@ -6,7 +6,7 @@
 package com.mycompany.bankingapplication;
 import com.mycompany.bankingapplication.Objects.Account;
 import com.mycompany.bankingapplication.Objects.Customer;
-import com.mycompany.bankingapplication.Objects.CustomersDataService;
+import com.mycompany.bankingapplication.Services.CustomersService;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,14 +36,15 @@ import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.CookieParam;
+import javax.ws.rs.core.GenericEntity;
 /**
  *
  * @author yo
  */
 @Path("/customer")
 public class CustomerResource {
-    CustomersDataService custOp = CustomersDataService.getInstance();
-    CustomersDataService customers = CustomersDataService.getInstance();
+    CustomersService custOp = CustomersService.getInstance();
+    CustomersService customers = CustomersService.getInstance();
     
     @POST
     @Path("/login")
@@ -53,10 +54,15 @@ public class CustomerResource {
         String email = customer.getEmail();
         String password = customer.getPassword();
         Customer loginCustomer = customers.getCustomerByEmail(email);
-        if((!loginCustomer.equals(null)) && (loginCustomer.getPassword().equals(password))){
+        try {
+             if((!loginCustomer.equals(null)) && (loginCustomer.getPassword().equals(password)) && (!loginCustomer.getFirstName().isEmpty() && !loginCustomer.getSecondName().isEmpty() && !loginCustomer.getEmail().isEmpty()
+                    && !loginCustomer.getPassword().isEmpty() && !loginCustomer.getAddress().isEmpty() && !loginCustomer.getSecurityCred().isEmpty())){
             String loginId = loginCustomer.getId();
             NewCookie cookie = new NewCookie("customerId", loginId, "/", "", "comment", 30000, false);
             return Response.status(Response.Status.OK).cookie(cookie).build();
+            }
+        } catch(Exception e) {
+             System.out.println(e);
         }
         return Response.status(Response.Status.NOT_FOUND).entity("Customer Does Not Exist").build();
     }
@@ -79,12 +85,16 @@ public class CustomerResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createCustomer(Customer newCustomer) {
-        if (newCustomer != null ) {
-            customers.addCustomer(newCustomer);
-            return Response.status(Response.Status.OK).entity(newCustomer).build();
-        } 
+        try {
+            if (newCustomer != null && (!newCustomer.getFirstName().isEmpty() && !newCustomer.getSecondName().isEmpty() && !newCustomer.getEmail().isEmpty()
+                    && !newCustomer.getPassword().isEmpty() && !newCustomer.getAddress().isEmpty() && !newCustomer.getSecurityCred().isEmpty())) {
+                customers.addCustomer(newCustomer);
+                return Response.status(Response.Status.OK).entity(newCustomer).build();
+            } 
+        } catch(Exception e) {
+            System.out.println(e);
+        }
         return Response.status(Response.Status.NO_CONTENT).entity("Inputs required to create new customer").build();
-
     }
    
     // for admin
@@ -144,12 +154,13 @@ public class CustomerResource {
     @GET
     @Path("/customers")
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<Customer> getCustomers() {
+    public Response getCustomers() {
         ArrayList<Customer> existingCustomers = customers.getCustomers();
-        if (existingCustomers.isEmpty()) {
-             return null;
+        GenericEntity<ArrayList<Customer>> entity = new GenericEntity<ArrayList<Customer>>(existingCustomers){};
+        if (existingCustomers.isEmpty()){
+            return Response.status(Response.Status.NOT_FOUND).entity("No customers are found").build();
         }
-        return existingCustomers;
+        return Response.status(Response.Status.OK).entity(entity).build();
     }
     
     // For specific customer details, get the customer based on ID
@@ -165,6 +176,4 @@ public class CustomerResource {
         Customer customerBasedOnId = customers.getCustomerById(id);
         return Response.status(Response.Status.OK).entity(customerBasedOnId).build();
     }
-    
-    
 }

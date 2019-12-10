@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.bankingapplication.Objects;
+package com.mycompany.bankingapplication.Services;
 
+import com.mycompany.bankingapplication.Objects.Customer;
 import java.util.ArrayList;
 
 /**
@@ -12,12 +13,12 @@ import java.util.ArrayList;
  * @author yo
  */
 
-public class CustomersDataService {
+public class CustomersService {
    private ArrayList<Customer> customers = new ArrayList<>();
-   private static CustomersDataService allCustomers = new CustomersDataService();
+   private static CustomersService allCustomers = new CustomersService();
    
    
-   public static CustomersDataService getInstance() {
+   public static CustomersService getInstance() {
        return allCustomers;
    }
    

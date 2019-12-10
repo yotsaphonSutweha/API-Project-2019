@@ -9,12 +9,38 @@ and open the template in the editor.
         <title>Create account</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" ></script>
         <script src="Js/AjaxRequest.js"></script> 
         <link rel='stylesheet' type='text/css' href='style.css'>
+        <style>
+           .navBar {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #333;
+            }
+            .navBarElement {
+                float: left;
+            }
+            .navBarElement a {
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+            .navBarElement a:hover {
+                background-color: #111;
+            }         
+        </style>
+    </head>
+    <body>
+        <ul class="navBar">
+            <li class="navBarElement"><a href="register.html">Register</a></li>
+            <li class="navBarElement"><a href="accounts.html">View accounts</a></li>
+        </ul>
         <h1 class="detailHeader">Create Account</h1>
         <div class="transactionsWrapper">
             <input type="text" name="balance" placeholder="Balance" id="balanceId" class="registerFieldsWrapper">
@@ -23,6 +49,7 @@ and open the template in the editor.
             <button id="submitBtn" onclick=executeCreateAccount() class="registerFieldsWrapper">Create Account</button>
             <button id="submitBtn" onclick=logout() class="registerFieldsWrapper">Logout</button>
         </div>
+        
         <script>
             function executeCreateAccount() {
                 var idText = $("#idTemp").val();

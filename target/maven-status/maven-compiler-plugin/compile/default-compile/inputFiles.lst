@@ -1,3 +1,18 @@
+<<<<<<< HEAD
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Objects/Transaction.java
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/AccountResource.java
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/TransactionResource.java
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Helpers/DebugMapper.java
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/TestingClient.java
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Objects/Account.java
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Services/AccountService.java
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Services/TransactionService.java
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Services/CustomersService.java
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/CustomerResource.java
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Helpers/CorsFilter.java
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Objects/Customer.java
+/Users/yo/Documents/Year4/API/API-Project-2019-master/src/main/java/com/mycompany/bankingapplication/Test.java
+=======
 /home/hassan/NetBeansProjects/BankingApplication/src/main/java/com/mycompany/bankingapplication/Services/AccountService.java
 /home/hassan/NetBeansProjects/BankingApplication/src/main/java/com/mycompany/bankingapplication/Objects/Transaction.java
 /home/hassan/NetBeansProjects/BankingApplication/src/main/java/com/mycompany/bankingapplication/AccountResource.java
@@ -11,3 +26,4 @@
 /home/hassan/NetBeansProjects/BankingApplication/src/main/java/com/mycompany/bankingapplication/Helpers/CorsFilter.java
 /home/hassan/NetBeansProjects/BankingApplication/src/main/java/com/mycompany/bankingapplication/TransactionResource.java
 /home/hassan/NetBeansProjects/BankingApplication/src/main/java/com/mycompany/bankingapplication/Services/TransactionService.java
+>>>>>>> 7434d22e0981bc57f1ac7a02770349526057da1a

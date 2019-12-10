@@ -10,8 +10,34 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel='stylesheet' type='text/css' href='style.css'>
+        <style>
+            .navBar {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #333;
+            }
+            .navBarElement {
+                float: left;
+            }
+            .navBarElement a {
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+            .navBarElement a:hover {
+                background-color: #111;
+            }       
+        </style>
     </head>
     <body>
+        <ul class="navBar">
+            <li class="navBarElement"><a href="accounts.html">View accounts</a></li>
+            <li class="navBarElement"><a href="createAccount.html">Create account</a></li>
+        </ul>
         <div id="accountDetails">
             <h1 id="accountName">Account Type: </h1>
             <p id="IBAN">IBAN: </p>
@@ -19,13 +45,13 @@ and open the template in the editor.
         </div>
         <div class="transactionsWrapper">
             <div class="detailHeader">
-                <h1>Lodge/withdraw/Transfer</h1>
+                <h1>Transactions</h1>
             </div>
             <hr>
-            <div class="flexWrapper">
-                <input type="text" name="amount" placeholder="amount" id="transOption">
-                <input type="text" name="description" placeholder="description" id="transferDescription">
-                <input type="text" name="transferIBAN" placeholder="Transfer IBAN" id="transferIBAN">
+            <div class="x">
+                <input type="text" name="amount" placeholder="amount" id="transOption" class="transactionInputFields">
+                <input type="text" name="description" placeholder="description" id="transferDescription" class="transactionInputFields">
+                <input type="text" name="transferIBAN" placeholder="Transfer IBAN" id="transferIBAN" class="transactionInputFields">
             </div>
             <div class="flexWrapper">
                 <button id="submitBtn" onclick=beginRequest('lodge')>Lodgement</button>
